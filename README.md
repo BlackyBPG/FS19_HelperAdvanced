@@ -44,12 +44,19 @@ Der Inhalt dieser XML sollte eigentlich selbsterklärend sein aber ich kann ihn 
 	</HelperAdvancedMenu>
 
 **tabletFile** - dies gibt den Pfad zur Hintergrundgrafik des HUDs an
+
 **buttonFile** - dies gibt den Pfad zur normalen Buttongrafik des HUDs an
+
 **buttonHoverFile** - dies gibt den Pfad zur Buttongrafik des HUDs an wenn ihr mit der Maus über dem Button seid (Hovereffekt)
+
 **menuTextColor** - die Farbe des Textes in den Menüs und Buttons
+
 **entryTextColor** - die Farbe der Texte in der Anzeige im Hauptbereich des Huds, also wie Helferauflistung zum Beispiel
+
 **entryDeactiveTextColor** - die Farbe der Texte in der Anzeige im Hauptbereich des Huds wenn der Helfer nicht verfügbar ist, weil er zum Beispiel gerade arbeitet
+
 **noteTextColor** - die Farbe der Texte welche auf Besonderheiten hinweisen, zum Beispiel "In Arbeit" oder Hinweis auf die Kosten sobald ein Helfer eingestellt ist
+
 **textSize** - die Standard-Größe der Schrift im Tablet, kann über diesen Wert für extrabreite Auflösungen eingestellt werden
 
 
