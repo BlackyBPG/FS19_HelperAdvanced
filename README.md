@@ -8,27 +8,27 @@ Mit den Erweiterten Helfern ändert sich das allerdings grundlegend.
 Helfer haben von jetzt an Namen und müssen erst eingestellt werden damit sie für dich arbeiten können. Wenn ein Helfer eingestellt ist zahlst du Lohn für diesen Helfer, ob du ihn zur Arbeit schickst oder nicht spielt da keine Rolle, der Grundlohn muß trotzdem entrichtet werden. Schickst du ihn zur Arbeit bekommt er für diese Arbeit die er ausführt nochmal etwas auf den Grundlohn drauf gezahlt.
 Aber das ist jetzt noch nicht alles, die Helfer sind grundsätzlich erstmal keine Experten auf dem Feld (gut das waren sie bei GIANTS noch nie) sondern sie müssen lernen. Sie bringen eventuell ein paar Fähigkeiten mit aber sind noch lange nicht perfekt. Für jede Tätigkeit die ein Helfer ausführen kann ist es auch möglich für den Helfer Erfahrung zu erlangen und somit besser zu werden.
 
-##### Was das jetzt im Einzelnen heißt?
+#### Was das jetzt im Einzelnen heißt?
 Ein Helfer der 0 (wortwörtlich NULL) Erfahrung hat fährt bedeutend langsamer beim Arbeiten als ihr und er verbraucht mehr Kraftstoff als ihr für die gleiche Arbeit, er kassiert dafür aber natürlich nur seinen Fähigkeiten entsprechend Lohn. Mit steigender Erfahrung wird der Helfer schneller und verbraucht weniger Kraftstoff, das geht soweit das ein Helfer der 100% Grunderfahrung hat und 100% Erfahrung in der Arbeit die er ausführen soll sogar schneller und Ertragreicher bzw Sparsamer arbeitet als ihr. Es lohnt sich also Helfer zu spezialisieren.
 
-##### Nochwas zum Lohn:
+#### Nochwas zum Lohn:
 Der Lohn berechnet sich nicht wie bei GIANTS Hinterhofabrechnung für Kindergärten, der Lohn den der Helfer kassiert wird pro Stunde gezahlt, und ich meine nicht Realzeit sondern Spielzeit, also wenn ihr schnell Geld an den Helfer übertragen wollt dann dreht doch ruhig auf 120fache Zeitbeschleunigung, 60€ sind 60€ pro Stunde, egal ob Echtzeit oder 120fach ... nochmal: ich bin NICHT GIANTS! Und der Grundlohn wird für jeden eingestellten Helfer gezahlt egal ob er was tut!
 Normale Arbeitszeiten des Helfers sind 06:00 bis 20:00 Uhr Montag bis Freitag, muß er zu anderen Zeiten Arbeiten erhöht sich die Lohnzahlung um 30%.
 
 Ach ja, entlassen werden kann ein Helfer frühestens 7 Tage nach der Einstellung, also überlegt euch ob ihr Helfer einstellt die ihr eigentlich nur mal für ein Feld braucht und danach nicht, dann macht es lieber selber.
 
-##### Wie funktioniert es?
+#### Wie funktioniert es?
 Eigentlich so wie immer, ihr setzt euch in ein Fahrzeug und aktiviert den Helfer, danach erscheint ein Menü und ihr könnt einen Helfer auswählen den ihr einstellt, oder sofern schon einer eingestellt wurde, diesen Auswählen und zuweisen, danach startet er seine Arbeit.
 Ihr könnt euch auch außerhalb eines Fahrzeuges über die Helfer informieren wenn ihr die Linke Shift + Pos 1 Tasten drückt, dann öffnet sich das Helfermenü.
 Hattet ihr einem Fahrzeug einmal einen Helfer zugewiesen merkt sich das Fahrzeug (ja klingt komisch, ist aber so) welcher Helfer auf ihm gefahren ist, startet ihr also nochmals die Helferauswahl im Fahrzeug braucht ihr diesen nicht mehr auszuwählen sondern nur noch auf "Helfer auswählen" klicken und der letzte Helfer des Fahrzeuges wird wieder auf dieses Aufsteigen, vorausgesetzt das der Helfer auch noch frei ist und nicht bereits auf einem anderen Fahrzeug unterwegs ist.
 
-##### Courseplay, FollowMe und Autodrive
+#### Courseplay, FollowMe und Autodrive
 Besonderheiten gibt es bei Courseplay, FollowMe und Autodrive, diese Mods arbeiten etwas anders (Courseplay ist dabei sogar anfälliger da es nicht die vorhandenen Helfer überprüft sondern einfach voraussetzt das welche da sind!) und deshalb gibt es dort eine etwas andere Regelung:
 Die Helfer für Courseplay, FollowMe und Autodrive können nicht selbst gewählt werden, sie werden aus dem vorhandenen Helferpool automatisch ausgewählt.
 Sind keine weiteren Helfer eingestellt werden für diese beiden Mods automatisch neue Helfer eingestellt. Dies ist in sofern interessant wenn man wirtschaftlich arbeiten will, denn auch für diese automatisch eingestellten Helfer gilt die 7 Tage Mindestbeschäftigung, ihr könnt sie also nicht einfach wieder entlassen. Prüft also vorher ob ihr nicht lieber woanders einen Helfer abziehen wollt, es kostet jeder Helfer der eingestellt ist Geld, nicht vergessen!
 Des weiteren werden Courseplay, FollowMe und Autodrive nicht nach der Eignung der Helfer fragen sondern zufällig einen aus der Arbeitslosenliste auswählen, auch wenn der noch gar nichts kann, das spielt für die automatische Einstellung keine Rolle!
 
-##### Die HUD Anzeige
+#### Die HUD Anzeige
 Die HUD-Anzeige ist von den Grafiken her komplett überarbeitbar, dies betrifft auch die Textfarben.
 Damit dies ermöglicht wird erstellt dieser Mod eine XML-Datei in eurem "UserProfileAppPath", das heißt in dem Ordner wo ihr die Odern savegames, mods und screenshots findet und wo eure Spielkonfiguration gespeichert ist (game.xml, gameSettings.xml).
 Der Inhalt dieser XML sollte eigentlich selbsterklärend sein aber ich kann ihn erläutere es lieber:
@@ -62,30 +62,30 @@ Der Inhalt dieser XML sollte eigentlich selbsterklärend sein aber ich kann ihn 
 
 Diese Werte werden NUR vom Clienten ausgewertet, ein Server benötigt diese Daten nicht da er nichts anzeigt, er ist ja nur der Server. Es kann jeder Client sein eigenes Design haben. Die Pfade zu den Grafiken müssen auch nicht unbedingt im "Mods" Ordner liegen, sie können auch in einem anderen Ordner, ausgehend von eurem Spielprofilordner liegen, der Pfad muß lediglich korrekt angegeben werden in der XML.
 
-##### Der Helfer auch InGame umbenannt werden.
+#### Der Helfer auch InGame umbenannt werden.
 Dazu macht ihr in der Liste eurer angestellten Helfer einen Rechtsklick auf den Helfer der umbenannt werden soll, daraufhin öffnet sich ein neues Fenster in dem ihr einen neuen Namen eingeben könnt für den Helfer.
 Auch hier gilt für den MP wieder: Nur Admins können Helfer umbennen!
 
 Ein eingestellter Helfer kann zu Lehrgängen geschickt werden um mehr Wissen und Erfahrung zu erlangen und somit effektiver zu arbeiten. Denn wie bereits bekannt spart ein erfahrener Helfer Zeit und Kraftstoff und somit letztendlich natürlich unser Geld.
 Natürlich weiß man von vorherigen Versionen des Helfers das ein sehr erfahrener Helfer auch bedeutend mehr Geld pro Stunde verdient, das ist in soweit zwar richtig aber das betrifft nur die Fähigkeiten die er sich selbst beim Arbeiten beigebracht bzw dort gelernt hat. Schickt man einen Helfer auf Lehrgang erlangt dieser zwar Wissen und Erfahrung, aber dies schlägt sich nicht auf seinen Lohn nieder. Weshalb? Nun, da der Chef (also wir) wirtschaftlich arbeiten müssen damit unser landwirtschaftlicher Betrieb Gewinne abwirft zahlt man lieber eine bestimmte Summe um dem Helfer etwas extra beibringen zu lassen als einen unerfahrenen Helfer auf das Feld zu schicken der nicht zu 100% effektiv arbeiten kann und wenn er dann soweit ist daß er es tut ein stattliches Gehalt verlangt (was er ja dann auch verdienen soll). Immerhin soll dieser Helfer uns ja noch lange auf dem Hof dienlich sein also muß man auf lange Sicht mit den Lohnkosten rechnen, bei einem Lehrgang der mich einmalig ca 70.000 € kostet und damit eingesparten Lohnkosten in Höhe von 12,50 € die Stunde, dazu kommen der eingesparte Kraftstoff und die eingesparte Zeit da er schneller arbeiten kann ... da fängt ein wirtschaftlicher denkender Mensch an zu rechnen möchte ich meinen.
 
-##### Wie funktioniert das mit den Lehrgängen?
+#### Wie funktioniert das mit den Lehrgängen?
 Ein Arbeiter muß angestellt sein und KEINER Tätigkeit nachgehen, also Freizeit haben. Dann wähle ich in der Helferübersicht den Arbeiter aus, es erscheinen im unteren Bildabschnitt die entsprechenden Lehrgänge, dazu die Beschreibung mitsamt Kosten pro Tag. Wird ein Lehrgang gewählt erscheinen 3 Auswahlmöglichkeiten für die Dauer des Lehrganges, ein Klick darauf startet den Lehrgang für die gewählte Dauer und der Helfer ist bis zum Abschluß des Lehrganges NICHT verfügbar.
 
-##### Weshalb Lehrgänge, der lernt beim Arbeiten doch auch?
+#### Weshalb Lehrgänge, der lernt beim Arbeiten doch auch?
 Korrekt, aber nicht so schnell. Bei einem Lehrgang lernt der Helfer doppelt so schnell wie bei der eigentlichen Arbeit da er sich speziell nur mit den für den Lehrgang spezifischen Dingen beschäftigen muß, nebenbei erlangt er auch einen kleinen Teil Erfahrung.
 
-##### Ist es egal welchen Helfer ich zum Lehrgang schicke?
+#### Ist es egal welchen Helfer ich zum Lehrgang schicke?
 Eigentlich schon, möchte man denken, Hauptsache er lernt dazu ... ABER ... ein gefüllter Topf kann nicht weiter befüllt werden bis das er überläuft ...
-##### W A T ?
+#### W A T ?
 Soll heißen: hat ein Helfer das maximale Wissen für die Lehrgangsfächer erreicht wird er den Lehrgang beenden.
 Aber das ist nicht alles was es bedeutet: ein Anfänger in der Landwirtschaft, sagen wir mal Lehrling mit 10% Grundwissen und Erfahrung, hat noch nichts im Kopf und viel Platz um Wissen aufzunehmen, er lernt also bedeutend schneller während ein alter Hase, sagen wir mal Meister zu ihm, seine Erfahrungen schon gesammelt hat und in vielen Bereichen Wissen erlangt hat und eigentlich des Lernens überdrüssig ist wesentlich länger braucht um sein Wissen auf den höchsten Level anzuheben.
-##### Kurzfassung (Bildbeispiele siehe Screenshots):
+#### Kurzfassung (Bildbeispiele siehe Screenshots):
 Je niedriger der Erfahrungswert eines Helfers umso schneller kann in den Fachbereichen Wissen erlangen, je höher die Erfahrung desto langsamer lernt er.
 
 Bitte dazu auch die Screenshots ansehen, dort sieht man sehr gut das die Fähigkeiten gestiegen sind, die Gehälter jedoch gleich geblieben sind. Ebenso kann man dort sehen das ein "Unwissender" schneller lernt als ein "Wissender".
 
-##### Welche Lehrgänge gibt es?
+#### Welche Lehrgänge gibt es?
 - Allgemeine Landwirtschaft
 - - Grundwissen über Wetterverhältnisse, Fahrzeuge sowie Regeln der Lagerhaltung
 - - +++ Erfahrung
@@ -113,12 +113,12 @@ Bitte dazu auch die Screenshots ansehen, dort sieht man sehr gut das die Fähigk
 - - > Arbeitsgeschwindigkeit beim Dreschen, Mähen sowie Ballen pressen
 - - > höhere Erträge beim Ernten, Mähen und Pressen
 
-##### Wie lange dauern die Lehrgänge?
+#### Wie lange dauern die Lehrgänge?
 Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfer kann so oft auf Lehrgang geschickt werden bis er das maximale Wissen des Lehrgangsthemas erlangt hat.
 
 ------------
 
-#### Features
+### Features
 
 - Helfer haben Namen
 - Helfer müssen zuerst eingestellt werden
@@ -137,7 +137,7 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 - Helfer können umbenannt werden direkt im Spiel (rechten Mausklick auf den umzubenennenden Helfer)
 - Helfer können Lehrgänge besuchen um effektiver zu arbeiten und Geld einzusparen
 
-
+### SCREENSHOTS
 [![](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/tn_HelperAdvanced01.png)](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/HelperAdvanced01.png)
 [![](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/tn_HelperAdvanced02.png)](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/HelperAdvanced02.png)
 [![](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/tn_HelperAdvanced03.png)](https://github.com/BlackyBPG/FS19_HelperAdvanced/blob/master/images/HelperAdvanced03.png)
@@ -160,7 +160,7 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ------------
 
-#### CHANGELOG:
+### CHANGELOG:
 
 - ##### Version 1.9.0.1 (14.01.2019)
 - - Initial converted Release for Fs19
