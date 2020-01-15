@@ -162,6 +162,9 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.1 A (15.01.2019)
+- - fix non working save function
+
 - ##### Version 1.9.0.1 (14.01.2019)
 - - Initial converted Release for Fs19
 
