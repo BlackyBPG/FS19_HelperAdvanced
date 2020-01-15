@@ -1,0 +1,9 @@
+﻿<HelperAdvancedMenu>
+    <tabletFile>mods/FS19_HelperAdvanced/huds/RedTablet/hud_tablet.dds</tabletFile>
+    <buttonFile>mods/FS19_HelperAdvanced/huds/RedTablet/hud_tablet_button.dds</buttonFile>
+    <buttonHoverFile>mods/FS19_HelperAdvanced/huds/RedTablet/hud_tablet_buttonHover.dds</buttonHoverFile>
+    <menuTextColor r="1.000000" g="1.000000" b="1.000000"/>
+    <entryTextColor r="1.000000" g="1.000000" b="1.000000"/>
+    <entryDeactiveTextColor r="0.600000" g="0.300000" b="0.300000"/>
+    <noteTextColor r="0.800000" g="0.800000" b="0.000000"/>
+</HelperAdvancedMenu>

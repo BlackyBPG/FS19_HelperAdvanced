@@ -3,7 +3,6 @@
 -- by Blacky_BPG
 -- 
 --
--- Version 1.9.0.1 A    |    15.01.2020    fix not working save function
 -- Version 1.9.0.1      |    14.01.2020    initial version for FS19
 -- Version 1.5.3.1 B    |    16.09.2018    fix savebug for text size
 -- Version 1.5.3.1 A    |    15.09.2018    add text size option in helper advanced config xml
@@ -53,7 +52,7 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.1 A - 15.01.2020"
+HelperAdvanced.version = "1.9.0.1 - 14.01.2020"
 HelperAdvanced.build = 200113
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
@@ -345,6 +344,9 @@ end
 function HelperAdvanced:saveSavegame(superFunc, ...)
 	if superFunc ~= nil then
 		superFunc(self, ...)
+	end
+	if g_dedicatedServerInfo ~= nil then
+		return
 	end
 	HelperAdvanced:createConfig(true)
 	if g_currentMission:getIsServer() then
