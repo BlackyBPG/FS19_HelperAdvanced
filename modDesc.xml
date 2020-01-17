@@ -3,13 +3,15 @@
 	<author>Blacky_BPG</author>
 	<version>1.9.0.2</version>
 	<title>
-		<en>Helper Advanced</en>
-		<de>Erweiterter Helfer</de>
+			<en>Helper Advanced</en>
+			<de>Erweiterter Helfer</de>
+			<ru>Продвинутый работник</ru>
 	</title>
 
 	<description>
-		<en>Helpers must gather experience points, thereby increasing their working speed and, of course, their wage.</en>
-		<de>Helfer müssen Erfahrungspunkte sammeln, steigern dadurch ihre Arbeitsgeschwindigkeit und natürlich auch ihren Lohn.</de>
+			<en>Helpers must gather experience points, thereby increasing their working speed and, of course, their wage.</en>
+			<de>Helfer müssen Erfahrungspunkte sammeln, steigern dadurch ihre Arbeitsgeschwindigkeit und natürlich auch ihren Lohn.</de>
+			<ru>Работники должны учится и набираться опыта, тем самым увеличивая скорость своей работы и, конечно же, свою заработную плату.</ru>
 	</description>
 
 	<iconFilename>bpglogo.dds</iconFilename>
@@ -20,118 +22,580 @@
 		<sourceFile filename="scripts/registerHelperAdvanced.lua" />
 	</extraSourceFiles>
 	<l10n>
-		<text name="ui_Char228"><de><![CDATA[ä]]></de><en><![CDATA[ae]]></en></text>
-		<text name="ui_Char246"><de><![CDATA[ö]]></de><en><![CDATA[oe]]></en></text>
-		<text name="ui_Char252"><de><![CDATA[ü]]></de><en><![CDATA[ue]]></en></text>
-		<text name="ui_Char196"><de><![CDATA[Ä]]></de><en><![CDATA[Ae]]></en></text>
-		<text name="ui_Char214"><de><![CDATA[Ö]]></de><en><![CDATA[Oe]]></en></text>
-		<text name="ui_Char220"><de><![CDATA[Ü]]></de><en><![CDATA[Ue]]></en></text>
-		<text name="ui_Char223"><de><![CDATA[ß]]></de><en><![CDATA[sz]]></en></text>
-		<text name="ui_helperNameNewNOTE"><en><![CDATA[* Minimum 3, maximum 20 characters]]></en><de><![CDATA[* Minimal 3, maximal 20 Zeichen]]></de></text>
-		<text name="ui_helperNameNewDEL"><en><![CDATA[DEL - delete current name]]></en><de><![CDATA[ENTF - lösche aktuellen Namen]]></de></text>
-		<text name="ui_helperNameNewESC"><en><![CDATA[ESC - cancel]]></en><de><![CDATA[ESC - Abbrechen]]></de></text>
-		<text name="ui_helperNameNewOK"><en><![CDATA[ENTER - set name]]></en><de><![CDATA[ENTER - Name setzen]]></de></text>
-		<text name="ui_helperNameNew"><en><![CDATA[Rename helper]]></en><de><![CDATA[Helfer umbenennen]]></de></text>
-		<text name="ui_helperNameDesc"><en><![CDATA[Helpername:]]></en><de><![CDATA[Helfername:]]></de></text>
-		<text name="ui_helperExperience"><en><![CDATA[Base experience:]]></en><de><![CDATA[Grunderfahrung:]]></de></text>
-		<text name="ui_helperBasewage"><en><![CDATA[Base wage per Hour:]]></en><de><![CDATA[Basislohn pro Stunde:]]></de></text>
-		<text name="ui_helperMoney"><en><![CDATA[%.2f €]]></en><de><![CDATA[%.2f €]]></de></text>
-		<text name="ui_helperEmployed"><en><![CDATA[Employer since:]]></en><de><![CDATA[Eingestellt seit:]]></de></text>
-		<text name="ui_helperEmployedTime"><en><![CDATA[%d d %d h]]></en><de><![CDATA[%d T %d Std]]></de></text>
-		<text name="ui_helperUnEmploy"><en><![CDATA[Dismissal possible:]]></en><de><![CDATA[Entlassung möglich:]]></de></text>
-		<text name="ui_helperUnEmployNo"><en><![CDATA[NO]]></en><de><![CDATA[NEIN]]></de></text>
-		<text name="ui_helperUnEmployYes"><en><![CDATA[YES]]></en><de><![CDATA[JA]]></de></text>
+		<text name="ui_Char228">
+			<de><![CDATA[ä]]></de>
+			<en><![CDATA[ae]]></en>
+		</text>
+		
+		<text name="ui_Char246">
+			<de><![CDATA[ö]]></de>
+			<en><![CDATA[oe]]></en>
+		</text>
+		
+		<text name="ui_Char252">
+			<de><![CDATA[ü]]></de>
+			<en><![CDATA[ue]]></en>
+		</text>
+		
+		<text name="ui_Char196">
+			<de><![CDATA[Ä]]></de>
+			<en><![CDATA[Ae]]></en>
+		</text>
+		
+		<text name="ui_Char214">
+			<de><![CDATA[Ö]]></de>
+			<en><![CDATA[Oe]]></en>
+		</text>
+		
+		<text name="ui_Char220">
+			<de><![CDATA[Ü]]></de>
+			<en><![CDATA[Ue]]></en>
+		</text>
+		
+		<text name="ui_Char223">
+			<de><![CDATA[ß]]></de>
+			<en><![CDATA[sz]]></en>
+		</text>
+		
+		<text name="ui_helperNameNewNOTE">
+			<en><![CDATA[* Minimum 3, maximum 20 characters]]></en>
+			<de><![CDATA[* Minimal 3, maximal 20 Zeichen]]></de>
+			<ru><![CDATA[* Минимум 3, максимум 20 символов]]></ru>
+		</text>
 
-		<text name="ui_helperExpAndPrice"><en><![CDATA[Experiences and additional wages]]></en><de><![CDATA[Fertigkeiten und zusätzliche Kosten]]></de></text>
-		<text name="ui_helperPlough"><en><![CDATA[Ploughing:]]></en><de><![CDATA[Pflügen:]]></de></text>
-		<text name="ui_helperCultivator"><en><![CDATA[Cultivating:]]></en><de><![CDATA[Grubbern:]]></de></text>
-		<text name="ui_helperSprayer"><en><![CDATA[Fertilizing:]]></en><de><![CDATA[Düngen:]]></de></text>
-		<text name="ui_helperSowing"><en><![CDATA[Sowing:]]></en><de><![CDATA[Säen:]]></de></text>
-		<text name="ui_helperCombine"><en><![CDATA[Harvesting:]]></en><de><![CDATA[Dreschen:]]></de></text>
-		<text name="ui_helperBaler"><en><![CDATA[Baling/Foragemixing:]]></en><de><![CDATA[Ballen/Sammelwagen:]]></de></text>
-		<text name="ui_helperMower"><en><![CDATA[Mwoing/Weeding:]]></en><de><![CDATA[Mähen/Schwaden:]]></de></text>
-		<text name="ui_helperOther"><en><![CDATA[Other:]]></en><de><![CDATA[Anderes:]]></de></text>
-		<text name="ui_helperLastUsed"><en><![CDATA[Last used vehicle:]]></en><de><![CDATA[Zuletzt benutzes Fahrzeug:]]></de></text>
+		<text name="ui_helperNameNewDEL">
+			<en><![CDATA[DEL - delete current name]]></en>
+			<de><![CDATA[ENTF - lösche aktuellen Namen]]></de>
+			<ru><![CDATA[DEL - удалить текущее имя]]></ru>
+		</text>
 
-		<text name="ui_helperValue"><en><![CDATA[%.1f %% , + %.2f €]]></en><de><![CDATA[%.1f %% , + %.2f €]]></de></text>
+		<text name="ui_helperNameNewESC">
+			<en><![CDATA[ESC - cancel]]></en>
+			<de><![CDATA[ESC - Abbrechen]]></de>
+			<ru><![CDATA[ESC - отменить]]></ru>
+		</text>
 
-		<text name="ui_helperS"><en>Helper | Selection</en><de>Helfer | Auswahl</de></text>
-		<text name="ui_helperE"><en>Helper | Employ</en><de>Helfer | Einstellen</de></text>
-		<text name="ui_helperO"><en>Helper | Costs</en><de>Helfer | Kosten</de></text>
-		<text name="ui_helperCostsOA"><en>Helper costs up to now:</en><de>Helferkosten bisher:</de></text>
-		<text name="ui_helperCostsE"><en>Base wage for employees:</en><de>Basislohn für Angestellte:</de></text>
-		<text name="ui_helperCostsAct"><en>Pay so far:</en><de>Bisheriger Lohn:</de></text>
-		<text name="ui_helperCostsC"><en>Current wage:</en><de>Aktueller Arbeitslohn:</de></text>
-		<text name="ui_helperCostsExpO"><en>Average basic experience:</en><de>Durchschnittliche Grunderfahrung:</de></text>
-		<text name="ui_helperCostsExpW"><en>Average work experience:</en><de>Durchschnittliche Arbeitserfahrung:</de></text>
-		<text name="ui_helperCosts"><en><![CDATA[%.2f €]]></en><de><![CDATA[%.2f €]]></de></text>
-		<text name="ui_helperCostsH"><en><![CDATA[%.2f € / h]]></en><de><![CDATA[%.2f € / Std]]></de></text>
-		<text name="ui_helperButtonOk"><en>select Helper</en><de>Helfer auswählen</de></text>
-		<text name="ui_helperButtonCancel"><en>Cancel</en><de>Abbrechen</de></text>
-		<text name="ui_helperName"><en>Helper name</en><de>Helfername</de></text>
-		<text name="ui_employ"><en><![CDATA[Employ]]></en><de><![CDATA[Einstellen]]></de></text>
-		<text name="ui_unemploy"><en><![CDATA[Unemploy]]></en><de><![CDATA[Entlassen]]></de></text>
-		<text name="ui_isHired"><en><![CDATA[in work]]></en><de><![CDATA[in Arbeit]]></de></text>
-		<text name="ui_isLearning"><en><![CDATA[in education]]></en><de><![CDATA[auf Lehrgang]]></de></text>
-		<text name="ui_notHired"><en><![CDATA[Leisure]]></en><de><![CDATA[Freizeit]]></de></text>
-		<text name="ui_workTitle"><en><![CDATA[Availability]]></en><de><![CDATA[Verfügbarkeit]]></de></text>
-		<text name="ui_experienceTitle"><en><![CDATA[Experience]]></en><de><![CDATA[Erfahrung]]></de></text>
-		<text name="ui_experienceText"><en><![CDATA[%s %%]]></en><de><![CDATA[%s %%]]></de></text>
-		<text name="ui_lastWorker"><en><![CDATA[(drove last)]]></en><de><![CDATA[(fuhr zuletzt)]]></de></text>
-		<text name="ui_workMoneyTitle"><en><![CDATA[Wage/h]]></en><de><![CDATA[Lohn/Std]]></de></text>
-		<text name="ui_workMoneyText"><en><![CDATA[%d €]]></en><de><![CDATA[%d €]]></de></text>
-		<text name="ui_forVehicle"><en><![CDATA[(for vehicle %s)]]></en><de><![CDATA[(für Fahrzeug %s)]]></de></text>
-		<text name="ui_plough"><en><![CDATA[Ploughing]]></en><de><![CDATA[Pflügen]]></de></text>
-		<text name="ui_cultivator"><en><![CDATA[Cultivating]]></en><de><![CDATA[Grubbern]]></de></text>
-		<text name="ui_sprayer"><en><![CDATA[Fertilizing]]></en><de><![CDATA[Düngen]]></de></text>
-		<text name="ui_sowing"><en><![CDATA[Sowing]]></en><de><![CDATA[Säen]]></de></text>
-		<text name="ui_combine"><en><![CDATA[Combining]]></en><de><![CDATA[Dreschen]]></de></text>
-		<text name="ui_bale"><en><![CDATA[Baleing]]></en><de><![CDATA[Ballen]]></de></text>
-		<text name="ui_mowing"><en><![CDATA[Mowing]]></en><de><![CDATA[Mähen]]></de></text>
-		<text name="ui_otherWork"><en><![CDATA[Other]]></en><de><![CDATA[Anderes]]></de></text>
-		<text name="ui_expPrice"><en><![CDATA[%d %%]]></en><de><![CDATA[%d %%]]></de></text>
-		<text name="ui_oneDay"><en><![CDATA[1 day]]></en><de><![CDATA[1 Tag]]></de></text>
-		<text name="ui_twoDays"><en><![CDATA[2 days]]></en><de><![CDATA[2 Tage]]></de></text>
-		<text name="ui_threeDays"><en><![CDATA[3 days]]></en><de><![CDATA[3 Tage]]></de></text>
-		<text name="ui_eduBasic"><en><![CDATA[General agriculture]]></en><de><![CDATA[Allgemeine Landwirtschaft]]></de></text>
-		<text name="ui_eduBasicDesc"><en><![CDATA[(%.2f €/day) | Basic knowledge of weather conditions, vehicles and rules of warehousing]]></en><de><![CDATA[(%.2f €/Tag) | Grundwissen über Wetterverhältnisse, Fahrzeuge sowie Regeln der Lagerhaltung]]></de></text>
-		<text name="ui_eduGround"><en><![CDATA[Field tillage]]></en><de><![CDATA[Bodenbearbeitung]]></de></text>
-		<text name="ui_eduGroundDesc"><en><![CDATA[(%.2f €/day) | Properly working field soils and handling the associated machinery]]></en><de><![CDATA[(%.2f €/Tag) | Richtiges Bearbeiten von Feldböden und handhaben der dazugehörigen Maschinen]]></de></text>
-		<text name="ui_eduPlants"><en><![CDATA[Sowing + rearing]]></en><de><![CDATA[Aussaat + Aufzucht]]></de></text>
-		<text name="ui_eduPlantsDesc"><en><![CDATA[(%.2f €/day) | Seeding and handling of sowing machines and correct use of fertilizer]]></en><de><![CDATA[(%.2f €/Tag) | Aussaat und Handhabung von Sämaschinen sowie richtiger Einsatz des Düngers]]></de></text>
-		<text name="ui_eduHarvest"><en><![CDATA[Harvest + contribution]]></en><de><![CDATA[Ernte + Einbringung]]></de></text>
-		<text name="ui_eduHarvestDesc"><en><![CDATA[(%.2f €/day) | Harvesting, mowing and collecting work including special machine training]]></en><de><![CDATA[(%.2f €/Tag) | Ernte, Mäh- und Sammelarbeiten inklusive Spezial-Maschinenschulung]]></de></text>
-		<text name="ui_helperDescription"><en><![CDATA[Take this into account if a helper is your employee, you in principle must pay his basic wage, independently of whether he an activity for you executes or not.
+		<text name="ui_helperNameNewOK">
+			<en><![CDATA[ENTER - set name]]></en>
+			<de><![CDATA[ENTER - Name setzen]]></de>
+			<ru><![CDATA[ENTER - назначить имя]]></ru>
+		</text>
+
+		<text name="ui_helperNameNew">
+			<en><![CDATA[Rename helper]]></en>
+			<de><![CDATA[Helfer umbenennen]]></de>
+			<ru><![CDATA[Переименовать работника]]></ru>
+		</text>
+
+		<text name="ui_helperNameDesc">
+			<en><![CDATA[Helpername:]]></en>
+			<de><![CDATA[Helfername:]]></de>
+			<ru><![CDATA[Работник:]]></ru>
+		</text>
+
+		<text name="ui_helperExperience">
+			<en><![CDATA[Base experience:]]></en>
+			<de><![CDATA[Grunderfahrung:]]></de>
+			<ru><![CDATA[Базовый опыт:]]></ru>
+		</text>
+
+		<text name="ui_helperBasewage">
+			<en><![CDATA[Base wage per Hour:]]></en>
+			<de><![CDATA[Basislohn pro Stunde:]]></de>
+			<ru><![CDATA[Базовая ставка за час:]]></ru>
+		</text>
+
+		<text name="ui_helperMoney">
+			<en><![CDATA[%.2f €]]></en>
+			<de><![CDATA[%.2f €]]></de>
+			<ru><![CDATA[%.2f €]]></ru>
+		</text>
+
+		<text name="ui_helperEmployed">
+			<en><![CDATA[Employer since:]]></en>
+			<de><![CDATA[Eingestellt seit:]]></de>
+			<ru><![CDATA[Длительность найма:]]></ru>
+		</text>
+
+		<text name="ui_helperEmployedTime">
+			<en><![CDATA[%d d %d h]]></en>
+			<de><![CDATA[%d T %d Std]]></de>
+			<ru><![CDATA[%d дн. %d ч]]></ru>
+		</text>
+
+		<text name="ui_helperUnEmploy">
+			<en><![CDATA[Dismissal possible:]]></en>
+			<de><![CDATA[Entlassung möglich:]]></de>
+			<ru><![CDATA[Может быть уволен:]]></ru>
+		</text>
+
+		<text name="ui_helperUnEmployNo">
+			<en><![CDATA[NO]]></en>
+			<de><![CDATA[NEIN]]></de>
+			<ru><![CDATA[НЕТ]]></ru>
+		</text>
+
+		<text name="ui_helperUnEmployYes">
+			<en><![CDATA[YES]]></en>
+			<de><![CDATA[JA]]></de>
+			<ru><![CDATA[ДА]]></ru>
+		</text>
+
+		<text name="ui_helperExpAndPrice">
+			<en><![CDATA[Experiences and additional wages]]></en>
+			<de><![CDATA[Fertigkeiten und zusätzliche Kosten]]></de>
+			<ru><![CDATA[Опыт и надбавки по категориям]]></ru>
+		</text>
+
+		<text name="ui_helperPlough">
+			<en><![CDATA[Ploughing:]]></en>
+			<de><![CDATA[Pflügen:]]></de>
+			<ru><![CDATA[Вспашка:]]></ru>
+		</text>
+		
+		<text name="ui_helperCultivator">
+			<en><![CDATA[Cultivating:]]></en>
+			<de><![CDATA[Grubbern:]]></de>
+			<ru><![CDATA[Культивация:]]></ru>
+		</text>
+		
+		<text name="ui_helperSprayer">
+			<en><![CDATA[Fertilizing:]]></en>
+			<de><![CDATA[Düngen:]]></de>
+			<ru><![CDATA[Внесение удобрений:]]></ru>
+		</text>
+		
+		<text name="ui_helperSowing">
+			<en><![CDATA[Sowing:]]></en>
+			<de><![CDATA[Säen:]]></de>
+			<ru><![CDATA[Посев:]]></ru>
+		</text>
+		
+		<text name="ui_helperCombine">
+			<en><![CDATA[Harvesting:]]></en>
+			<de><![CDATA[Dreschen:]]></de>
+			<ru><![CDATA[Уборка урожая:]]></ru>
+		</text>
+		
+		<text name="ui_helperBaler">
+			<en><![CDATA[Baling/Foragemixing:]]></en>
+			<de><![CDATA[Ballen/Sammelwagen:]]></de>
+			<ru><![CDATA[Тюковка:]]></ru>
+		</text>
+	
+		<text name="ui_helperMower">
+			<en><![CDATA[Mowing/Weeding:]]></en>
+			<de><![CDATA[Mähen/Schwaden:]]></de>
+			<ru><![CDATA[Покос/Валкование:]]></ru>
+		</text>
+		
+		<text name="ui_helperOther">
+			<en><![CDATA[Other:]]></en>
+			<de><![CDATA[Anderes:]]></de>
+			<ru><![CDATA[Другое:]]></ru>
+		</text>
+		
+		<text name="ui_helperLastUsed">
+			<en><![CDATA[Last used vehicle:]]></en>
+			<de><![CDATA[Zuletzt benutzes Fahrzeug:]]></de>
+			<ru><![CDATA[Последняя использованая техника:]]></ru>
+		</text>
+
+		<text name="ui_helperValue">
+			<en><![CDATA[%.1f %% , + %.2f €]]></en>
+			<de><![CDATA[%.1f %% , + %.2f €]]></de>
+			<ru><![CDATA[%.1f %% , + %.2f €]]></ru>
+		</text>
+
+		<text name="ui_helperS">
+			<en>Helper | Selection</en>
+			<de>Helfer | Auswahl</de>
+			<ru>Работник | Выбор</ru>
+		</text>
+		
+		<text name="ui_helperE">
+			<en>Helper | Employ</en>
+			<de>Helfer | Einstellen</de>
+			<ru>Работник | Биржа труда</ru>
+		</text>
+		
+		<text name="ui_helperO">
+			<en>Helper | Costs</en>
+			<de>Helfer | Kosten</de>
+			<ru>Работник | Расходы</ru>
+		</text>
+		
+		<text name="ui_helperCostsOA">
+			<en>Helper costs up to now:</en>
+			<de>Helferkosten bisher:</de>
+			<ru>Расходы на работников до сих пор:</ru>
+		</text>
+
+		<text name="ui_helperCostsE">
+			<en>Base wage for employees:</en>
+			<de>Basislohn für Angestellte:</de>
+			<ru>Базовая заработная плата работников:</ru>
+		</text>
+
+		<text name="ui_helperCostsAct">
+			<en>Pay so far:</en>
+			<de>Bisheriger Lohn:</de>
+			<ru>Заработал до сих пор:</ru>
+		</text>
+
+		<text name="ui_helperCostsC">
+			<en>Current wage:</en>
+			<de>Aktueller Arbeitslohn:</de>
+			<ru>Текущая заработная плата:</ru>
+		</text>
+
+		<text name="ui_helperCostsExpO">
+			<en>Average basic experience:</en>
+			<de>Durchschnittliche Grunderfahrung:</de>
+			<ru>Средний базовый опыт:</ru>
+		</text>
+
+		<text name="ui_helperCostsExpW">
+			<en>Average work experience:</en>
+			<de>Durchschnittliche Arbeitserfahrung:</de>
+			<ru>Средний опыт работы:</ru>
+		</text>
+
+		<text name="ui_helperCosts">
+			<en><![CDATA[%.2f €]]></en>
+			<de><![CDATA[%.2f €]]></de>
+			<ru><![CDATA[%.2f €]]></ru>
+		</text>
+
+		<text name="ui_helperCostsH">
+			<en><![CDATA[%.2f € / h]]></en>
+			<de><![CDATA[%.2f € / Std]]></de>
+			<ru><![CDATA[%.2f €/ч]]></ru>
+		</text>
+
+		<text name="ui_helperButtonOk">
+			<en>select Helper</en>
+			<de>Helfer auswählen</de>
+			<ru>НАЗНАЧИТЬ</ru>
+		</text>
+
+		<text name="ui_helperButtonCancel">
+			<en>Cancel</en>
+			<de>Abbrechen</de>
+			<ru>ЗАКРЫТЬ</ru>
+		</text>
+
+		<text name="ui_helperName">
+			<en>Helper name</en>
+			<de>Helfername</de>
+			<ru>Работник</ru>
+		</text>
+
+		<text name="ui_employ">
+			<en><![CDATA[Employ]]></en>
+			<de><![CDATA[Einstellen]]></de>
+			<ru><![CDATA[Нанять]]></ru>
+		</text>
+
+		<text name="ui_unemploy">
+			<en><![CDATA[Unemploy]]></en>
+			<de><![CDATA[Entlassen]]></de>
+			<ru><![CDATA[Уволить]]></ru>
+		</text>
+
+		<text name="ui_isHired">
+			<en><![CDATA[in work]]></en>
+			<de><![CDATA[in Arbeit]]></de>
+			<ru><![CDATA[работает]]></ru>
+		</text>
+
+		<text name="ui_isLearning">
+			<en><![CDATA[in education]]></en>
+			<de><![CDATA[auf Lehrgang]]></de>
+			<ru><![CDATA[на курсах]]></ru>
+		</text>
+
+		<text name="ui_notHired">
+			<en><![CDATA[Leisure]]></en>
+			<de><![CDATA[Freizeit]]></de>
+			<ru><![CDATA[cвободный]]></ru>
+		</text>
+
+		<text name="ui_workTitle">
+			<en><![CDATA[Availability]]></en>
+			<de><![CDATA[Verfügbarkeit]]></de>
+			<ru><![CDATA[Доступность]]></ru>
+		</text>
+
+		<text name="ui_experienceTitle">
+			<en><![CDATA[Experience]]></en>
+			<de><![CDATA[Erfahrung]]></de>
+			<ru><![CDATA[Опыт]]></ru>
+		</text>
+
+		<text name="ui_experienceText">
+			<en><![CDATA[%s %%]]></en>
+			<de><![CDATA[%s %%]]></de>
+			<ru><![CDATA[%s %%]]></ru>
+		</text>
+
+		<text name="ui_lastWorker">
+			<en><![CDATA[(drove last)]]></en>
+			<de><![CDATA[(fuhr zuletzt)]]></de>
+			<ru><![CDATA[(работал последним)]]></ru>
+		</text>
+
+		<text name="ui_workMoneyTitle">
+			<en><![CDATA[Wage/h]]></en>
+			<de><![CDATA[Lohn/Std]]></de>
+			<ru><![CDATA[€/ч]]></ru>
+		</text>
+
+		<text name="ui_workMoneyText">
+			<en><![CDATA[%d €]]></en>
+			<de><![CDATA[%d €]]></de>
+			<ru><![CDATA[%d €]]></ru>
+		</text>
+
+		<text name="ui_forVehicle">
+			<en><![CDATA[(for vehicle %s)]]></en>
+			<de><![CDATA[(für Fahrzeug %s)]]></de>
+			<ru><![CDATA[(на технику %s)]]></ru>
+		</text>
+
+		<text name="ui_plough">
+			<en><![CDATA[Ploughing]]></en>
+			<de><![CDATA[Pflügen]]></de>
+			<ru><![CDATA[Вспашка]]></ru>
+		</text>
+
+		<text name="ui_cultivator">
+			<en><![CDATA[Cultivating]]></en>
+			<de><![CDATA[Grubbern]]></de>
+			<ru><![CDATA[Культивация]]></ru>
+		</text>
+
+		<text name="ui_sprayer">
+			<en><![CDATA[Fertilizing]]></en>
+			<de><![CDATA[Düngen]]></de>
+			<ru><![CDATA[Удобрение]]></ru>
+		</text>
+
+		<text name="ui_sowing">
+			<en><![CDATA[Sowing]]></en>
+			<de><![CDATA[Säen]]></de>
+			<ru><![CDATA[Посев]]></ru>
+		</text>
+
+		<text name="ui_combine">
+			<en><![CDATA[Combining]]></en>
+			<de><![CDATA[Dreschen]]></de>
+			<ru><![CDATA[Уборка]]></ru>
+		</text>
+
+		<text name="ui_bale">
+			<en><![CDATA[Baleing]]></en>
+			<de><![CDATA[Ballen]]></de>
+			<ru><![CDATA[Тюковка]]></ru>
+		</text>
+
+		<text name="ui_mowing">
+			<en><![CDATA[Mowing]]></en>
+			<de><![CDATA[Mähen]]></de>
+			<ru><![CDATA[Покос]]></ru>
+		</text>
+
+		<text name="ui_otherWork">
+			<en><![CDATA[Other]]></en>
+			<de><![CDATA[Anderes]]></de>
+			<ru><![CDATA[Другое]]></ru>
+		</text>
+
+		<text name="ui_expPrice">
+			<en><![CDATA[%d %%]]></en>
+			<de><![CDATA[%d %%]]></de>
+			<ru><![CDATA[%d %%]]></ru>
+		</text>
+
+		<text name="ui_oneDay">
+			<en><![CDATA[1 day]]></en>
+			<de><![CDATA[1 Tag]]></de>
+			<ru><![CDATA[1 день]]></ru>
+		</text>
+
+		<text name="ui_twoDays">
+			<en><![CDATA[2 days]]></en>
+			<de><![CDATA[2 Tage]]></de>
+			<ru><![CDATA[2 дня]]></ru>
+		</text>
+
+		<text name="ui_threeDays">
+			<en><![CDATA[3 days]]></en>
+			<de><![CDATA[3 Tage]]></de>
+			<ru><![CDATA[3 дня]]></ru>
+		</text>
+
+		<text name="ui_eduBasic">
+			<en><![CDATA[General agriculture]]></en>
+			<de><![CDATA[Allgemeine Landwirtschaft]]></de>
+			<ru><![CDATA[Основы сельского хозяйства]]></ru>
+		</text>
+
+		<text name="ui_eduBasicDesc">
+			<en><![CDATA[(%.2f €/day) | Basic knowledge of weather conditions, vehicles and rules of warehousing]]></en>
+			<de><![CDATA[(%.2f €/Tag) | Grundwissen über Wetterverhältnisse, Fahrzeuge sowie Regeln der Lagerhaltung]]></de>
+			<ru><![CDATA[(%.2f €/день) | Базовые знания погодных условий, транспортных средств и правил складирования]]></ru>
+		</text>
+
+		<text name="ui_eduGround">
+			<en><![CDATA[Field tillage]]></en>
+			<de><![CDATA[Bodenbearbeitung]]></de>
+			<ru><![CDATA[Обработка почвы]]></ru>
+		</text>
+
+		<text name="ui_eduGroundDesc">
+			<en><![CDATA[(%.2f €/day) | Properly working field soils and handling the associated machinery]]></en>
+			<de><![CDATA[(%.2f €/Tag) | Richtiges Bearbeiten von Feldböden und handhaben der dazugehörigen Maschinen]]></de>
+			<ru><![CDATA[(%.2f €/день) | Правильная обработка почвы и соответствующее обрабатывающее оборудование]]></ru>
+		</text>
+
+		<text name="ui_eduPlants">
+			<en><![CDATA[Sowing + rearing]]></en>
+			<de><![CDATA[Aussaat + Aufzucht]]></de>
+			<ru><![CDATA[Посев + Выращивание]]></ru>
+		</text>
+
+		<text name="ui_eduPlantsDesc">
+			<en><![CDATA[(%.2f €/day) | Seeding and handling of sowing machines and correct use of fertilizer]]></en>
+			<de><![CDATA[(%.2f €/Tag) | Aussaat und Handhabung von Sämaschinen sowie richtiger Einsatz des Düngers]]></de>
+			<ru><![CDATA[(%.2f €/день) | Посев и использование посевных машин и правильное использование удобрений]]></ru>
+		</text>
+
+		<text name="ui_eduHarvest">
+			<en><![CDATA[Harvest + contribution]]></en>
+			<de><![CDATA[Ernte + Einbringung]]></de>
+			<ru><![CDATA[Уборка + Складирование]]></ru>
+		</text>
+
+		<text name="ui_eduHarvestDesc">
+			<en><![CDATA[(%.2f €/day) | Harvesting, mowing and collecting work including special machine training]]></en>
+			<de><![CDATA[(%.2f €/Tag) | Ernte, Mäh- und Sammelarbeiten inklusive Spezial-Maschinenschulung]]></de>
+			<ru><![CDATA[(%.2f €/день) | Уборка, покос и работы по сбору, включая обучение на спецтехнике]]></ru>
+		</text>
+
+		<text name="ui_helperDescription">
+			<en><![CDATA[Take this into account if a helper is your employee, you in principle must pay his basic wage, independently of whether he an activity for you executes or not.
 The time acceleration is irrelevant for the deduction of the wage amount, 60 € for real time in an hour is also 60 € with 120x time acceleration in an hour.
 This is not GIANTS backyard price discount for nursery schools but presupposes an economic thinking, do not simply at random hire helpers, but only if you really
-need them permanently. A helper can be dismissed after his employment at the earliest 7 days.]]></en><de><![CDATA[Beachten Sie das, wenn ein Helfer eingestellt ist, Sie grundsätzlich seinen Basislohn zahlen müssen, unabhängig davon ob er gerade eine Tätigkeit für Sie ausführt oder nicht.
+need them permanently. A helper can be dismissed after his employment at the earliest 7 days.]]></en>
+			<de><![CDATA[Beachten Sie das, wenn ein Helfer eingestellt ist, Sie grundsätzlich seinen Basislohn zahlen müssen, unabhängig davon ob er gerade eine Tätigkeit für Sie ausführt oder nicht.
 Für den Abzug des Lohnbetrages spielt die Zeitbeschleunigung keine Rolle, 60 € bei Echtzeit in einer Stunde sind auch 60 € bei 120facher Zeitbeschleunigung in einer Stunde.
 Das ist nicht GIANTS Hinterhofpreisabzug für Kindergärten sondern setzt wirtschaftliches Denken vorraus, nicht einfach wahllos Helfer einstellen sondern nur wenn man
-diesen auch wirklich dauerhaft benötigt. Entlassen werden kann ein Helfer frühestens 7 Tage nach seiner Einstellung.]]></de></text>
-		<text name="ui_helperDescriptionUser"><en><![CDATA[Only MasterUser/Admins can employ helpers !
+diesen auch wirklich dauerhaft benötigt. Entlassen werden kann ein Helfer frühestens 7 Tage nach seiner Einstellung.]]></de>
+			<ru><![CDATA[Учтите то, что работник является вашим сотрудником, вы, в принципе, должны платить базовую ставку независимо от того, занят он какой-либо работой для вас
+или нет. При начислении суммы заработной платы, ускорение времени не имеет значения: 60 €/ч как в режиме реального времени так и 60 €/ч при ускорении х120. 
+Это предполагает экономическое мышление, и не просто нанимайте наемных помощников, а только если вы действительно нуждаетесь в них на постоянной основе.
+Помощник может быть уволен лишь по истечению 7-ми дней с момента его трудоустройства.]]></ru>
+		</text>
+
+		<text name="ui_helperDescriptionUser">
+			<en><![CDATA[Only MasterUser/Admins can employ helpers !
 Take this into account if a helper is your employee, you in principle must pay his basic wage, independently of whether he an activity for you executes or not.
 The time acceleration is irrelevant for the deduction of the wage amount, 60 € for real time in an hour is also 60 € with 120x time acceleration in an hour.
 This is not GIANTS backyard price discount for nursery schools but presupposes an economic thinking, do not simply at random hire helpers, but only if you really
-need them permanently. A helper can be dismissed after his employment at the earliest 7 days.]]></en><de><![CDATA[Nur MasterUser/Admins können Helfer einstellen !
+need them permanently. A helper can be dismissed after his employment at the earliest 7 days.]]></en>
+			<de><![CDATA[Nur MasterUser/Admins können Helfer einstellen !
 Beachten Sie das, wenn ein Helfer eingestellt ist, Sie grundsätzlich seinen Basislohn zahlen müssen, unabhängig davon ob er gerade eine Tätigkeit für Sie ausführt oder nicht.
 Für den Abzug des Lohnbetrages spielt die Zeitbeschleunigung keine Rolle, 60 € bei Echtzeit in einer Stunde sind auch 60 € bei 120facher Zeitbeschleunigung in einer Stunde.
 Das ist nicht GIANTS Hinterhofpreisabzug für Kindergärten sondern setzt wirtschaftliches Denken vorraus, nicht einfach wahllos Helfer einstellen sondern nur wenn man
-diesen auch wirklich dauerhaft benötigt. Entlassen werden kann ein Helfer frühestens 7 Tage nach seiner Einstellung.]]></de></text>
-		<text name="warning_noEmployees"><en><![CDATA[You currently have no helpers under contract who can work for you.]]></en><de><![CDATA[Sie haben derzeit keine Helfer unter Vertrag die für sie arbeiten können.]]></de></text>
-		<text name="warning_notEnoughFreeHelper"><en><![CDATA[You don't have enough free helpers at your disposal.
-Hire new employees or remove existing helpers from other machines.]]></en><de><![CDATA[Sie haben nicht genug freie Helfer zur Verfügung.
-Stellen Sie neue ein oder ziehen Sie vorhandene Helfer von anderen Geräten ab.]]></de></text>
-		<text name="warning_courseplayAutoEmploy"><en><![CDATA[Courseplay has employed a new helper!]]></en><de><![CDATA[Courseplay hat einen neuen Helfer eingestellt!]]></de></text>
-		<text name="warning_followmeAutoEmploy"><en><![CDATA[FollowMe has employed a new helper!]]></en><de><![CDATA[FollowMe hat einen neuen Helfer eingestellt!]]></de></text>
-		<text name="warning_autodriveAutoEmploy"><en><![CDATA[AutoDrive has employed a new helper!]]></en><de><![CDATA[AutoDrive hat einen neuen Helfer eingestellt!]]></de></text>
-		<text name="input_HELPEROVERVIEW"><en><![CDATA[Helper overview]]></en><de><![CDATA[Helferübersicht]]></de></text>
-		<text name="ui_day1"><en><![CDATA[Mo]]></en><de><![CDATA[Mo]]></de></text>
-		<text name="ui_day2"><en><![CDATA[Tu]]></en><de><![CDATA[Di]]></de></text>
-		<text name="ui_day3"><en><![CDATA[We]]></en><de><![CDATA[Mi]]></de></text>
-		<text name="ui_day4"><en><![CDATA[Th]]></en><de><![CDATA[Do]]></de></text>
-		<text name="ui_day5"><en><![CDATA[Fr]]></en><de><![CDATA[Fr]]></de></text>
-		<text name="ui_day6"><en><![CDATA[Sa]]></en><de><![CDATA[Sa]]></de></text>
-		<text name="ui_day7"><en><![CDATA[Su]]></en><de><![CDATA[So]]></de></text>
+diesen auch wirklich dauerhaft benötigt. Entlassen werden kann ein Helfer frühestens 7 Tage nach seiner Einstellung.]]></de>
+			<ru><![CDATA[Только Администраторы могут нанимать работников!
+Учтите то, что работник является вашим сотрудником, вы, в принципе, должны платить базовую ставку независимо от того, занят ли он какой-либо работой для вас
+или нет. При начислении суммы заработной платы, ускорение времени не имеет значения: 60 €/ч как в режиме реального времени, так и 60 €/ч при ускорении х120. 
+Это предполагает экономическое мышление, не просто нанимайте наемных помощников, а лишь если вы действительно нуждаетесь в них на постоянной основе.
+Помощник может быть уволен лишь по истечению 7-ми дней с момента его трудоустройства.]]></ru>
+		</text>
+
+		<text name="warning_noEmployees">
+			<en><![CDATA[You currently have no helpers under contract who can work for you.]]></en>
+			<de><![CDATA[Sie haben derzeit keine Helfer unter Vertrag die für sie arbeiten können.]]></de>
+			<ru><![CDATA[В настоящее время у вас нет нанятых работников по контракту, которые могли бы на вас работать.]]></ru>
+		</text>
+
+		<text name="warning_notEnoughFreeHelper">
+			<en><![CDATA[You don't have enough free helpers at your disposal.
+Hire new employees or remove existing helpers from other machines.]]></en>
+			<de><![CDATA[Sie haben nicht genug freie Helfer zur Verfügung.
+Stellen Sie neue ein oder ziehen Sie vorhandene Helfer von anderen Geräten ab.]]></de>
+			<ru><![CDATA[В вашем распоряжении недостаточно работников.
+Наймите новых сотрудников или переназначьте имеющихся работников с других машин.]]></ru>
+		</text>
+
+		<text name="warning_courseplayAutoEmploy">
+			<en><![CDATA[Courseplay has employed a new helper!]]></en>
+			<de><![CDATA[Courseplay hat einen neuen Helfer eingestellt!]]></de>
+			<ru><![CDATA[В Courseplay нанялся новый работник!]]></ru>
+		</text>
+
+		<text name="warning_followmeAutoEmploy">
+			<en><![CDATA[FollowMe has employed a new helper!]]></en>
+			<de><![CDATA[FollowMe hat einen neuen Helfer eingestellt!]]></de>
+			<ru><![CDATA[В FollowMe нанялся новый работник!]]></ru>
+		</text>
+		
+		<text name="warning_autodriveAutoEmploy">
+			<en><![CDATA[AutoDrive has employed a new helper!]]></en>
+			<de><![CDATA[AutoDrive hat einen neuen Helfer eingestellt!]]></de>
+			<ru><![CDATA[В AutoDrive нанялся новый работник!]]></ru>
+		</text>
+
+		<text name="input_HELPEROVERVIEW">
+			<en><![CDATA[Helper overview]]></en>
+			<de><![CDATA[Helferübersicht]]></de>
+			<ru><![CDATA[Обзор рабочих]]></ru>
+		</text>
+
+		<text name="ui_day1">
+			<en><![CDATA[Mo]]></en>
+			<de><![CDATA[Mo]]></de>
+			<ru><![CDATA[Пн]]></ru>
+		</text>
+
+		<text name="ui_day2">
+			<en><![CDATA[Tu]]></en>
+			<de><![CDATA[Di]]></de>
+			<ru><![CDATA[Вт]]></ru>
+		</text>
+
+		<text name="ui_day3">
+			<en><![CDATA[We]]></en>
+			<de><![CDATA[Mi]]></de>
+			<ru><![CDATA[Ср]]></ru>
+		</text>
+
+		<text name="ui_day4">
+			<en><![CDATA[Th]]></en>
+			<de><![CDATA[Do]]></de>
+			<ru><![CDATA[Чт]]></ru>
+		</text>
+
+		<text name="ui_day5">
+			<en><![CDATA[Fr]]></en>
+			<de><![CDATA[Fr]]></de>
+			<ru><![CDATA[Пт]]></ru>
+		</text>
+
+		<text name="ui_day6">
+			<en><![CDATA[Sa]]></en>
+			<de><![CDATA[Sa]]></de>
+			<ru><![CDATA[Сб]]></ru>
+		</text>
+
+		<text name="ui_day7">
+			<en><![CDATA[Su]]></en>
+			<de><![CDATA[So]]></de>
+			<ru><![CDATA[Вс]]></ru>
+		</text>
 	</l10n>
 
 	<inputBinding>
