@@ -19,7 +19,7 @@ Ach ja, entlassen werden kann ein Helfer frühestens 7 Tage nach der Einstellung
 
 #### Wie funktioniert es?
 Eigentlich so wie immer, ihr setzt euch in ein Fahrzeug und aktiviert den Helfer, danach erscheint ein Menü und ihr könnt einen Helfer auswählen den ihr einstellt, oder sofern schon einer eingestellt wurde, diesen Auswählen und zuweisen, danach startet er seine Arbeit.
-Ihr könnt euch auch außerhalb eines Fahrzeuges über die Helfer informieren wenn ihr die Linke Shift + Pos 1 Tasten drückt, dann öffnet sich das Helfermenü.
+Ihr könnt euch auch außerhalb eines Fahrzeuges über die Helfer informieren wenn ihr die **Numpad *** Taste drückt, dann öffnet sich das Helfermenü.
 Hattet ihr einem Fahrzeug einmal einen Helfer zugewiesen merkt sich das Fahrzeug (ja klingt komisch, ist aber so) welcher Helfer auf ihm gefahren ist, startet ihr also nochmals die Helferauswahl im Fahrzeug braucht ihr diesen nicht mehr auszuwählen sondern nur noch auf "Helfer auswählen" klicken und der letzte Helfer des Fahrzeuges wird wieder auf dieses Aufsteigen, vorausgesetzt das der Helfer auch noch frei ist und nicht bereits auf einem anderen Fahrzeug unterwegs ist.
 
 #### Courseplay, FollowMe und Autodrive
