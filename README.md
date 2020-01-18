@@ -162,6 +162,9 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.4 (18.01.2019)
+- - fix sprayer functionality
+
 - ##### Version 1.9.0.3 (18.01.2019)
 - - Courseplay and AutoDrive hired several new helpers on the dedicated server
 - - FollowMe did not start on the dedicated server
