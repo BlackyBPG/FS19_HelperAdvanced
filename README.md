@@ -30,7 +30,7 @@ Des weiteren werden Courseplay, FollowMe und Autodrive nicht nach der Eignung de
 
 #### Die HUD Anzeige
 Die HUD-Anzeige ist von den Grafiken her komplett überarbeitbar, dies betrifft auch die Textfarben.
-Damit dies ermöglicht wird erstellt dieser Mod eine XML-Datei in eurem "UserProfileAppPath", das heißt in dem Ordner wo ihr die Odern savegames, mods und screenshots findet und wo eure Spielkonfiguration gespeichert ist (game.xml, gameSettings.xml).
+Damit dies ermöglicht wird erstellt dieser Mod eine XML-Datei in eurem "UserProfileAppPath", das heißt in dem Ordner wo ihr die Ordner savegames, mods und screenshots findet und wo eure Spielkonfiguration gespeichert ist (game.xml, gameSettings.xml).
 Der Inhalt dieser XML sollte eigentlich selbsterklärend sein aber ich kann ihn erläutere es lieber:
 
 	<HelperAdvancedMenu>
@@ -41,6 +41,7 @@ Der Inhalt dieser XML sollte eigentlich selbsterklärend sein aber ich kann ihn 
 		<entryTextColor r="0.000000" g="0.000000" b="0.000000"/>
 		<entryDeactiveTextColor r="0.300000" g="0.300000" b="0.300000"/>
 		<noteTextColor r="0.300000" g="0.000000" b="0.300000"/>
+		<textSize>8.543000</textSize>
 	</HelperAdvancedMenu>
 
 **tabletFile** - dies gibt den Pfad zur Hintergrundgrafik des HUDs an
