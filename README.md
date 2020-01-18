@@ -162,6 +162,14 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.3 (18.01.2019)
+- - Courseplay and AutoDrive hired several new helpers on the dedicated server
+- - FollowMe did not start on the dedicated server
+- - DedicatedServer and players had different helpers active on the same vehicle
+
+- ##### Version 1.9.0.2 (17.01.2019)
+- - correct function with Courseplay, FollowMe and AutoDrive
+
 - ##### Version 1.9.0.1 A (15.01.2019)
 - - fix non working save function
 
