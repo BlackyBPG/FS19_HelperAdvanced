@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<player>
+    <filename>$dataS2/character/humans/pedestrians/woman06.i3d</filename>
+    <character>
+        <thirdPerson mesh="1" skeleton="0" spine="0|0" skeletonOffset="0 0.14 0" />
+    </character>
+    <ikChains>
+        <ikChain id="rightFoot" target="0" targetOffset="0 0.1 0" alignToTarget="true" isDirtyOnLoad="true" >
+            <node index="0|1"     minRx="-2" maxRx="2" minRy="-30" maxRy="30" minRz="0" maxRz="100" localLimits="true" />
+            <node index="0|1|0"   minRx="-2" maxRx="2" minRy="0"   maxRy="0"  minRz="-100" maxRz="0" localLimits="true" />
+            <node index="0|1|0|0" />
+        </ikChain>
+        <ikChain id="leftFoot" target="0" targetOffset="0 0.1 0" alignToTarget="true" isDirtyOnLoad="true">
+            <node index="0|2"     minRx="-2" maxRx="2" minRy="-30" maxRy="30" minRz="0"    maxRz="100" localLimits="true" />
+            <node index="0|2|0"   minRx="-2" maxRx="2" minRy="0"   maxRy="0"  minRz="-100" maxRz="0" localLimits="true" />
+            <node index="0|2|0|0" />
+        </ikChain>
+        <ikChain id="rightArm" target="0" targetOffset="0.025 0.066 0" alignToTarget="true" isDirtyOnLoad="true">
+            <node index="0|0|0|1" minRx="-20" maxRx="20" minRy="-60" maxRy="36" minRz="-80" maxRz="100" localLimits="true" />
+            <node index="0|0|0|1|0" minRx="-10" maxRx="10" minRy="0" maxRy="0" minRz="7"   maxRz="130" />
+            <node index="0|0|0|1|0|0" />
+            <rotationNode index="0|0|0|1|0|0|0"   rotation="0 0 -60" />
+            <rotationNode index="0|0|0|1|0|0|0|0" rotation="0 0 -60" />
+            <rotationNode index="0|0|0|1|0|0|1"   rotation="-90 20 -40" />
+            <rotationNode index="0|0|0|1|0|0|1|0" rotation="0 0 -40" />
+        </ikChain>
+        <ikChain id="leftArm" target="0" targetOffset="-0.025 0.066 0" alignToTarget="true" isDirtyOnLoad="true">
+            <node index="0|0|0|2" minRx="-20" maxRx="20" minRy="-60" maxRy="36" minRz="-80" maxRz="100" localLimits="true" />
+            <node index="0|0|0|2|0" minRx="-10" maxRx="10" minRy="0" maxRy="0" minRz="7"   maxRz="130" />
+            <node index="0|0|0|2|0|0" />
+            <rotationNode index="0|0|0|2|0|0|0"   rotation="0 0 -60" />
+            <rotationNode index="0|0|0|2|0|0|0|0" rotation="0 0 -60" />
+            <rotationNode index="0|0|0|2|0|0|1"   rotation="-90 20 -40" />
+            <rotationNode index="0|0|0|2|0|0|1|0" rotation="0 0 -40" />
+        </ikChain>
+    </ikChains>
+</player>

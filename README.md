@@ -163,6 +163,14 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.5 (20.01.2019)
+- - from theorist to practitioner: learned skills are slowly being converted into practical knowledge if the helper is active in the task
+- - add InGame changable Tablet buttons
+- - fix sprayer usage
+- - fix calculation for various usages
+- - fix helper fuel and def usage
+- - fix combine error without helper
+
 - ##### Version 1.9.0.4 (18.01.2019)
 - - fix sprayer functionality
 
