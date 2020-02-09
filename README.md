@@ -163,7 +163,10 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
-- ##### Version 1.9.0.5 (20.01.2019)
+- ##### Version 1.9.0.6 (09.02.2020)
+- - fix specialized learning while working
+
+- ##### Version 1.9.0.5 (20.01.2020)
 - - from theorist to practitioner: learned skills are slowly being converted into practical knowledge if the helper is active in the task
 - - add InGame changable Tablet buttons
 - - fix sprayer usage
@@ -171,21 +174,21 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 - - fix helper fuel and def usage
 - - fix combine error without helper
 
-- ##### Version 1.9.0.4 (18.01.2019)
+- ##### Version 1.9.0.4 (18.01.2020)
 - - fix sprayer functionality
 
-- ##### Version 1.9.0.3 (18.01.2019)
+- ##### Version 1.9.0.3 (18.01.2020)
 - - Courseplay and AutoDrive hired several new helpers on the dedicated server
 - - FollowMe did not start on the dedicated server
 - - DedicatedServer and players had different helpers active on the same vehicle
 
-- ##### Version 1.9.0.2 (17.01.2019)
+- ##### Version 1.9.0.2 (17.01.2020)
 - - correct function with Courseplay, FollowMe and AutoDrive
 
-- ##### Version 1.9.0.1 A (15.01.2019)
+- ##### Version 1.9.0.1 A (15.01.2020)
 - - fix non working save function
 
-- ##### Version 1.9.0.1 (14.01.2019)
+- ##### Version 1.9.0.1 (14.01.2020)
 - - Initial converted Release for Fs19
 
 ------------
