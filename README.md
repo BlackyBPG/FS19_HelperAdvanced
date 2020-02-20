@@ -163,6 +163,9 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.8 (20.02.2020)
+- - fixed the error when ending/cancel/close the game
+
 - ##### Version 1.9.0.7 (12.02.2020)
 - - fix for the calculation of experience-based consumption/harvest values
 - - fix sprayer function for experience-based consumption/harvest values
