@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <player>
-    <filename>$dataS2/character/humans/pedestrians/man03.i3d</filename>
+    <filename>$dataS2/character/humans/pedestrians/woman06.i3d</filename>
     <character>
         <thirdPerson mesh="1" skeleton="0" spine="0|0" skeletonOffset="0 0.14 0" />
     </character>
