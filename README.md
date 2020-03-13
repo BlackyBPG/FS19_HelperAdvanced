@@ -163,6 +163,9 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.10 (13.03.2020)
+- - fix addMoney error
+
 - ##### Version 1.9.0.9 (01.03.2020)
 - - fix helper hiring for farmmanagers
 - - fixed the error when ending/cancel/close the game
