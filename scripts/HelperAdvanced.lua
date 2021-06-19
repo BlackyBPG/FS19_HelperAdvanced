@@ -3,6 +3,7 @@
 -- by Blacky_BPG
 -- 
 --
+-- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
 -- Version 1.9.0.9      |    01.03.2020    fix helper hiring for farmmanagers, fixed the error when ending/cancel/close the game
 -- Version 1.9.0.8      |    20.02.2020    fixed the error when ending/cancel/close the game
@@ -64,8 +65,8 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.10 - 13.03.2020"
-HelperAdvanced.build = 200122
+HelperAdvanced.version = "1.9.0.11 - 19.06.2021"
+HelperAdvanced.build = 210619
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
 getfenv(0)["g_HelperAdvanced"] = HelperAdvanced
@@ -173,41 +174,44 @@ function HelperAdvanced:loadMap(fileName)
 			xmlFile = loadXMLFile("xml", filename)
 			if xmlFile ~= nil then
 				local key = "HelperAdvanced."
-				local build = Utils.getNoNil(getXMLInt(xmlFile, key.."version#build"),1) if build > 1 and build < 200000 then build = 443 elseif build < 200122 then build = 1 end
+				local build = Utils.getNoNil(getXMLInt(xmlFile, key.."version#build"),1) if build > 1 and build < 200000 then build = 443 elseif build < 200122 then build = 1 end if build > 200000 and build < 210000 then build = build * 23456 end
 				for i=1, g_helperManager.numHelpers do
 					g_helperManager.indexToHelper[i].nameShow = Utils.getNoNil(getXMLString(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ownName"),g_helperManager.indexToHelper[i].nameShow)
 					g_helperManager.indexToHelper[i].isEmployed = Utils.getNoNil(getXMLBool(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#isEmployed"),g_helperManager.indexToHelper[i].isEmployed)
-					g_helperManager.indexToHelper[i].checkValue = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#checkValue"),g_helperManager.indexToHelper[i].checkValue*build)/build
-					g_helperManager.indexToHelper[i].costs = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#costs"),g_helperManager.indexToHelper[i].costs*build)/build
-					g_helperManager.indexToHelper[i].experience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#experience"),g_helperManager.indexToHelper[i].experience*build)/build
-					g_helperManager.indexToHelper[i].baseExperience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#experienceBase"),g_helperManager.indexToHelper[i].experience*build)/build
-					g_helperManager.indexToHelper[i].learnedExperience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#educated"),g_helperManager.indexToHelper[i].learnedExperience*build)/build
-					g_helperManager.indexToHelper[i].experienceBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#baler"),g_helperManager.indexToHelper[i].experienceBaler*build)/build
-					g_helperManager.indexToHelper[i].baseBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#balerBase"),g_helperManager.indexToHelper[i].experienceBaler*build)/build
-					g_helperManager.indexToHelper[i].learnedBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#balerLearned"),g_helperManager.indexToHelper[i].learnedBaler*build)/build
-					g_helperManager.indexToHelper[i].experienceCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combine"),g_helperManager.indexToHelper[i].experienceCombine*build)/build
-					g_helperManager.indexToHelper[i].baseCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combineBase"),g_helperManager.indexToHelper[i].experienceCombine*build)/build
-					g_helperManager.indexToHelper[i].learnedCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combineLearned"),g_helperManager.indexToHelper[i].learnedCombine*build)/build
-					g_helperManager.indexToHelper[i].experienceCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivator"),g_helperManager.indexToHelper[i].experienceCultivator*build)/build
-					g_helperManager.indexToHelper[i].basexperienceCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivatorBase"),g_helperManager.indexToHelper[i].experienceCultivator*build)/build
-					g_helperManager.indexToHelper[i].learnedCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivatorLearned"),g_helperManager.indexToHelper[i].learnedCultivator*build)/build
-					g_helperManager.indexToHelper[i].experienceSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayer"),g_helperManager.indexToHelper[i].experienceSprayer*build)/build
-					g_helperManager.indexToHelper[i].baseSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayerBase"),g_helperManager.indexToHelper[i].experienceSprayer*build)/build
-					g_helperManager.indexToHelper[i].learnedSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayerLearned"),g_helperManager.indexToHelper[i].learnedSprayer*build)/build
-					g_helperManager.indexToHelper[i].experienceMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mower"),g_helperManager.indexToHelper[i].experienceMower*build)/build
-					g_helperManager.indexToHelper[i].baseMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mowerBase"),g_helperManager.indexToHelper[i].experienceMower*build)/build
-					g_helperManager.indexToHelper[i].learnedMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mowerLearned"),g_helperManager.indexToHelper[i].learnedMower*build)/build
-					g_helperManager.indexToHelper[i].experienceSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowing"),g_helperManager.indexToHelper[i].experienceSowingMachine*build)/build
-					g_helperManager.indexToHelper[i].baseSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowingBase"),g_helperManager.indexToHelper[i].experienceSowingMachine*build)/build
-					g_helperManager.indexToHelper[i].learnedSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowingLearned"),g_helperManager.indexToHelper[i].learnedSowingMachine*build)/build
-					g_helperManager.indexToHelper[i].experiencePlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#plough"),g_helperManager.indexToHelper[i].experiencePlough*build)/build
-					g_helperManager.indexToHelper[i].basePlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ploughBase"),g_helperManager.indexToHelper[i].experiencePlough*build)/build
-					g_helperManager.indexToHelper[i].learnedPlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ploughLearned"),g_helperManager.indexToHelper[i].learnedPlough*build)/build
-					g_helperManager.indexToHelper[i].experienceOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#other"),g_helperManager.indexToHelper[i].experienceOther*build)/build
-					g_helperManager.indexToHelper[i].baseOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#otherBase"),g_helperManager.indexToHelper[i].experienceOther*build)/build
-					g_helperManager.indexToHelper[i].learnedOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#otherLearned"),g_helperManager.indexToHelper[i].learnedOther*build)/build 
-					g_helperManager.indexToHelper[i].isLearning = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#learnStage"),g_helperManager.indexToHelper[i].isLearning*build)/build
-					g_helperManager.indexToHelper[i].isLearnSpec = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#learnSpec"),g_helperManager.indexToHelper[i].isLearnSpec*build)/build
+					g_helperManager.indexToHelper[i].checkValue = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#checkValue"),g_helperManager.indexToHelper[i].checkValue*(build/23456))/(build/23456)
+					if g_helperManager.indexToHelper[i].checkValue < 0 then
+						g_helperManager.indexToHelper[i].checkValue = (0 - g_helperManager.indexToHelper[i].checkValue) * 2
+					end
+					g_helperManager.indexToHelper[i].costs = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#costs"),g_helperManager.indexToHelper[i].costs*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#experience"),g_helperManager.indexToHelper[i].experience*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseExperience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#experienceBase"),g_helperManager.indexToHelper[i].experience*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedExperience = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#educated"),g_helperManager.indexToHelper[i].learnedExperience*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#baler"),g_helperManager.indexToHelper[i].experienceBaler*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#balerBase"),g_helperManager.indexToHelper[i].experienceBaler*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedBaler = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#balerLearned"),g_helperManager.indexToHelper[i].learnedBaler*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combine"),g_helperManager.indexToHelper[i].experienceCombine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combineBase"),g_helperManager.indexToHelper[i].experienceCombine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedCombine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#combineLearned"),g_helperManager.indexToHelper[i].learnedCombine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivator"),g_helperManager.indexToHelper[i].experienceCultivator*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].basexperienceCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivatorBase"),g_helperManager.indexToHelper[i].experienceCultivator*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedCultivator = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#cultivatorLearned"),g_helperManager.indexToHelper[i].learnedCultivator*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayer"),g_helperManager.indexToHelper[i].experienceSprayer*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayerBase"),g_helperManager.indexToHelper[i].experienceSprayer*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedSprayer = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sprayerLearned"),g_helperManager.indexToHelper[i].learnedSprayer*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mower"),g_helperManager.indexToHelper[i].experienceMower*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mowerBase"),g_helperManager.indexToHelper[i].experienceMower*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedMower = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#mowerLearned"),g_helperManager.indexToHelper[i].learnedMower*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowing"),g_helperManager.indexToHelper[i].experienceSowingMachine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowingBase"),g_helperManager.indexToHelper[i].experienceSowingMachine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedSowingMachine = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#sowingLearned"),g_helperManager.indexToHelper[i].learnedSowingMachine*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experiencePlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#plough"),g_helperManager.indexToHelper[i].experiencePlough*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].basePlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ploughBase"),g_helperManager.indexToHelper[i].experiencePlough*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedPlough = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ploughLearned"),g_helperManager.indexToHelper[i].learnedPlough*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].experienceOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#other"),g_helperManager.indexToHelper[i].experienceOther*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].baseOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#otherBase"),g_helperManager.indexToHelper[i].experienceOther*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].learnedOther = Utils.getNoNil(getXMLFloat(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#otherLearned"),g_helperManager.indexToHelper[i].learnedOther*(build/23456))/(build/23456) 
+					g_helperManager.indexToHelper[i].isLearning = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#learnStage"),g_helperManager.indexToHelper[i].isLearning*(build/23456))/(build/23456)
+					g_helperManager.indexToHelper[i].isLearnSpec = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#learnSpec"),g_helperManager.indexToHelper[i].isLearnSpec*(build/23456))/(build/23456)
 					g_helperManager.indexToHelper[i].ownerFarmId = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ownerFarmId"),g_helperManager.indexToHelper[i].ownerFarmId)
 					g_helperManager.indexToHelper[i].experiencePercent = math.min(g_helperManager.indexToHelper[i].experience * 100,100)
 					g_helperManager.indexToHelper[i].percentBaler = math.min(g_helperManager.indexToHelper[i].experienceBaler * 100,100)
@@ -390,37 +394,37 @@ function HelperAdvanced:saveSavegame(superFunc, ...)
 			for i=1, g_helperManager.numHelpers do
 				setXMLBool(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#isEmployed", g_helperManager.indexToHelper[i].isEmployed)
 				setXMLString(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ownName", g_helperManager.indexToHelper[i].nameShow)
-				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#checkValue", g_helperManager.indexToHelper[i].checkValue*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#costs", g_helperManager.indexToHelper[i].costs*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#experience", g_helperManager.indexToHelper[i].experience*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#experienceBase", g_helperManager.indexToHelper[i].baseExperience*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#educated", g_helperManager.indexToHelper[i].learnedExperience*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#baler", g_helperManager.indexToHelper[i].experienceBaler*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#balerBase", g_helperManager.indexToHelper[i].baseBaler*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#balerLearned", g_helperManager.indexToHelper[i].learnedBaler*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combine", g_helperManager.indexToHelper[i].experienceCombine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combineBase", g_helperManager.indexToHelper[i].baseCombine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combineLearned", g_helperManager.indexToHelper[i].learnedCombine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivator", g_helperManager.indexToHelper[i].experienceCultivator*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivatorBase", g_helperManager.indexToHelper[i].basexperienceCultivator*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivatorLearned", g_helperManager.indexToHelper[i].learnedCultivator*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayer", g_helperManager.indexToHelper[i].experienceSprayer*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayerBase", g_helperManager.indexToHelper[i].baseSprayer*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayerLearned", g_helperManager.indexToHelper[i].learnedSprayer*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mower", g_helperManager.indexToHelper[i].experienceMower*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mowerBase", g_helperManager.indexToHelper[i].baseMower*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mowerLearned", g_helperManager.indexToHelper[i].learnedMower*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowing", g_helperManager.indexToHelper[i].experienceSowingMachine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowingBase", g_helperManager.indexToHelper[i].baseSowingMachine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowingLearned", g_helperManager.indexToHelper[i].learnedSowingMachine*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#plough", g_helperManager.indexToHelper[i].experiencePlough*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ploughBase", g_helperManager.indexToHelper[i].basePlough*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ploughLearned", g_helperManager.indexToHelper[i].learnedPlough*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#other", g_helperManager.indexToHelper[i].experienceOther*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#otherBase", g_helperManager.indexToHelper[i].baseOther*g_HelperAdvanced.build)
-				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#otherLearned", g_helperManager.indexToHelper[i].learnedOther*g_HelperAdvanced.build)
-				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#learnStage", g_helperManager.indexToHelper[i].isLearning*g_HelperAdvanced.build)
-				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#learnSpec", g_helperManager.indexToHelper[i].isLearnSpec*g_HelperAdvanced.build)
+				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#checkValue", g_helperManager.indexToHelper[i].checkValue*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#costs", g_helperManager.indexToHelper[i].costs*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#experience", g_helperManager.indexToHelper[i].experience*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#experienceBase", g_helperManager.indexToHelper[i].baseExperience*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#educated", g_helperManager.indexToHelper[i].learnedExperience*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#baler", g_helperManager.indexToHelper[i].experienceBaler*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#balerBase", g_helperManager.indexToHelper[i].baseBaler*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#balerLearned", g_helperManager.indexToHelper[i].learnedBaler*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combine", g_helperManager.indexToHelper[i].experienceCombine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combineBase", g_helperManager.indexToHelper[i].baseCombine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#combineLearned", g_helperManager.indexToHelper[i].learnedCombine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivator", g_helperManager.indexToHelper[i].experienceCultivator*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivatorBase", g_helperManager.indexToHelper[i].basexperienceCultivator*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#cultivatorLearned", g_helperManager.indexToHelper[i].learnedCultivator*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayer", g_helperManager.indexToHelper[i].experienceSprayer*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayerBase", g_helperManager.indexToHelper[i].baseSprayer*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sprayerLearned", g_helperManager.indexToHelper[i].learnedSprayer*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mower", g_helperManager.indexToHelper[i].experienceMower*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mowerBase", g_helperManager.indexToHelper[i].baseMower*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#mowerLearned", g_helperManager.indexToHelper[i].learnedMower*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowing", g_helperManager.indexToHelper[i].experienceSowingMachine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowingBase", g_helperManager.indexToHelper[i].baseSowingMachine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#sowingLearned", g_helperManager.indexToHelper[i].learnedSowingMachine*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#plough", g_helperManager.indexToHelper[i].experiencePlough*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ploughBase", g_helperManager.indexToHelper[i].basePlough*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ploughLearned", g_helperManager.indexToHelper[i].learnedPlough*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#other", g_helperManager.indexToHelper[i].experienceOther*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#otherBase", g_helperManager.indexToHelper[i].baseOther*(g_HelperAdvanced.build/23456))
+				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#otherLearned", g_helperManager.indexToHelper[i].learnedOther*(g_HelperAdvanced.build/23456))
+				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#learnStage", g_helperManager.indexToHelper[i].isLearning*(g_HelperAdvanced.build/23456))
+				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#learnSpec", g_helperManager.indexToHelper[i].isLearnSpec*(g_HelperAdvanced.build/23456))
 				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ownerFarmId", g_helperManager.indexToHelper[i].ownerFarmId)
 			end
 		end
@@ -648,6 +652,17 @@ function HelperAdvanced:update(dt)
 	else
 		if self.firstStart == 0 then
 			self.firstStart = -1
+			if self.isServer or g_server ~= nil then
+				for i=1, g_helperManager.numHelpers do
+					if g_farmManager.farmIdToFarm[g_helperManager.indexToHelper[i].ownerFarmId] == nil then
+						g_helperManager.indexToHelper[i].ownerFarmId = 0
+					end
+					if g_helperManager.indexToHelper[i].ownerFarmId == 0 then
+						g_helperManager.indexToHelper[i].checkValue = 0
+						g_helperManager.indexToHelper[i].isEmployed = 0
+					end
+				end
+			end
 			if self.isClient or g_server == nil then
 				g_client:getServerConnection():sendEvent(HelperDataRequest:new(true))
 			end
@@ -657,6 +672,9 @@ function HelperAdvanced:update(dt)
 		if HelperAdvanced.request == true then
 			HelperAdvanced.request = false
 			for i=1, g_helperManager.numHelpers do
+				if g_farmManager.farmIdToFarm[g_helperManager.indexToHelper[i].ownerFarmId] == nil then
+					g_helperManager.indexToHelper[i].ownerFarmId = 0
+				end
 				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(g_helperManager.indexToHelper[i].nameShow,g_helperManager.indexToHelper[i].pricePerMS,g_helperManager.indexToHelper[i].experience,g_helperManager.indexToHelper[i].learnedExperience,g_helperManager.indexToHelper[i].experienceBaler,g_helperManager.indexToHelper[i].learnedBaler,g_helperManager.indexToHelper[i].experienceCombine,g_helperManager.indexToHelper[i].learnedCombine,g_helperManager.indexToHelper[i].experienceCultivator,g_helperManager.indexToHelper[i].learnedCultivator,g_helperManager.indexToHelper[i].experienceSprayer,g_helperManager.indexToHelper[i].learnedSprayer,g_helperManager.indexToHelper[i].experienceMower,g_helperManager.indexToHelper[i].learnedMower,g_helperManager.indexToHelper[i].experienceSowingMachine,g_helperManager.indexToHelper[i].learnedSowingMachine,g_helperManager.indexToHelper[i].experiencePlough,g_helperManager.indexToHelper[i].learnedPlough,g_helperManager.indexToHelper[i].experienceOther,g_helperManager.indexToHelper[i].learnedOther,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec, g_helperManager.indexToHelper[i].isHired, i, g_helperManager.indexToHelper[i].checkValue, g_helperManager.indexToHelper[i].isEmployed, g_helperManager.indexToHelper[i].lastVehicle, Utils.getNoNil(g_helperManager.indexToHelper[i].lastVehicleAiStarted,false), g_helperManager.indexToHelper[i].costs, g_helperManager.indexToHelper[i].ownerFarmId))
 			end
 		end
@@ -975,6 +993,7 @@ function HelperAdvanced:mouseEvent(posX, posY, isDown, isUp, button)
 									local maxX = 0.807+(HelperAdvanced.tSize*0.9*5*0.75)
 									if posX > 0.807 and posX < maxX then
 										g_helperManager.indexToHelper[i].isEmployed = true
+										g_helperManager.indexToHelper[i].checkValue = 0
 										self:hireHelper(i,true,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,g_currentMission.player.farmId)
 									end
 								else
