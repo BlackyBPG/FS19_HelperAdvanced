@@ -659,7 +659,7 @@ function HelperAdvanced:update(dt)
 					end
 					if g_helperManager.indexToHelper[i].ownerFarmId == 0 then
 						g_helperManager.indexToHelper[i].checkValue = 0
-						g_helperManager.indexToHelper[i].isEmployed = 0
+						g_helperManager.indexToHelper[i].isEmployed = false
 					end
 				end
 			end
