@@ -163,6 +163,9 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.12 (10.07.2021)
+- - fix wrong dismiss helper after ending loan works
+
 - ##### Version 1.9.0.11 (19.06.2021)
 - - fix wrong (negativ) employment time
 - - fix MP to SP farmId change error

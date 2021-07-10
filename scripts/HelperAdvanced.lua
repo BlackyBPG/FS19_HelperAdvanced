@@ -3,6 +3,7 @@
 -- by Blacky_BPG
 -- 
 --
+-- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
 -- Version 1.9.0.9      |    01.03.2020    fix helper hiring for farmmanagers, fixed the error when ending/cancel/close the game
@@ -65,8 +66,8 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.11 - 19.06.2021"
-HelperAdvanced.build = 210619
+HelperAdvanced.version = "1.9.0.12 - 10.07.2021"
+HelperAdvanced.build = 210710
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
 getfenv(0)["g_HelperAdvanced"] = HelperAdvanced

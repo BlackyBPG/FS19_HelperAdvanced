@@ -2,6 +2,7 @@
 -- Helper Advanced for Vehicles for FS17
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
 -- Version 1.9.0.9      |    01.03.2020    fix helper hiring for farmmanagers, fixed the error when ending/cancel/close the game
@@ -96,9 +97,10 @@ function HelperAdvancedVehicle:onUpdate(dt)
 		g_helperManager:getHelperByIndex(helper.index).lastVehicleName = self.ownVehicleName
 		self.spec_aiVehicle.lastHelper = helper.index
 		if g_dedicatedServerInfo ~= nil then
-			if g_helperManager:getHelperByIndex(helper.index).ownerFarmId ~= self:getOwnerFarmId() then
+			if g_helperManager:getHelperByIndex(helper.index).ownerFarmId ~= self:getOwnerFarmId() and not g_currentMission.accessHandler:canFarmAccessOtherId(g_helperManager:getHelperByIndex(helper.index).ownerFarmId, self:getOwnerFarmId()) then
 				g_helperManager:releaseHelper(self.spec_aiVehicle.currentHelper,nil,true)
 				g_helperManager.indexToHelper[helper.index].isEmployed = false
+				g_helperManager.indexToHelper[helper.index].isHired = false
 				g_HelperAdvanced:hireHelper(helper.index,false,g_helperManager.indexToHelper[helper.index].isLearning,g_helperManager.indexToHelper[helper.index].isLearnSpec,g_helperManager:getHelperByIndex(helper.index).ownerFarmId)
 				local newHelper = g_helperManager:getRandomHelper(nil,false,self:getOwnerFarmId())
 				if newHelper ~= nil and newHelper.ownerFarmId == self:getOwnerFarmId() then
