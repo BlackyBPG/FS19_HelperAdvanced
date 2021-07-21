@@ -3,6 +3,7 @@
 -- by Blacky_BPG
 -- 
 --
+-- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
@@ -66,7 +67,7 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.12 - 10.07.2021"
+HelperAdvanced.version = "1.9.0.13 - 20.07.2021"
 HelperAdvanced.build = 210710
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
@@ -1730,16 +1731,14 @@ local function HelperAdvancedCombineCutterArea(self, superFunc, area, realArea, 
 			spec.threshingScaleBackup = spec.threshingScale
 		end
 		if isHired and cH ~= nil then
-			local addScale = ((1.1 - 0.75) * cH.experienceCombine) + 0.75
-			spec.threshingScale = spec.threshingScaleBackup * addScale
-			strawRatio = strawRatio * addScale
+			spec.threshingScale = spec.threshingScaleBackup * math.max(cH.experienceCombine - 0.9 + 1,0.6)
+			strawRatio = strawRatio * math.max(cH.experienceCombine - 0.9 + 1,0.6)
 		else
 			spec.threshingScale = spec.threshingScaleBackup
 		end
 	end
 	return superFunc(self, area, realArea, inputFruitType, outputFillType, strawRatio, farmId)
 end
--- Combine.addCutterArea = Utils.prependedFunction(Combine.addCutterArea, HelperAdvancedCombineCutterArea)
 Combine.addCutterArea = Utils.overwrittenFunction(Combine.addCutterArea, HelperAdvancedCombineCutterArea)
 
 local function HelperAdvancedForageWagonEndWorkAreaProcessing(self, dt, hasProcessed)
@@ -1754,10 +1753,8 @@ local function HelperAdvancedForageWagonEndWorkAreaProcessing(self, dt, hasProce
 			end
 		end
 		if isHired and cH ~= nil then
-			-- local addScale = ((1.1 - 0.75) * cH.experienceBaler) + 0.75
-			local addScale = ((1.1 - 0.75) * cH.experienceMower) + 0.75
 			if spec.workAreaParameters.lastPickupLiters > 0 then
-				spec.workAreaParameters.lastPickupLiters = spec.workAreaParameters.lastPickupLiters * addScale
+				spec.workAreaParameters.lastPickupLiters = spec.workAreaParameters.lastPickupLiters * math.max(cH.experienceMower - 0.9 + 1,0.6)
 			end
 		end
 	end
@@ -1805,8 +1802,7 @@ local function HelperAdvancedBalerEndWorkAreaProcessing(self, dt, hasProcessed)
 			spec.fillScaleBackup = spec.fillScale
 		end
 		if isHired and cH ~= nil then
-			local addScale = ((1.1 - 0.75) * cH.experienceBaler) + 0.75
-			spec.fillScale = spec.fillScaleBackup * addScale
+			spec.fillScale = spec.fillScaleBackup * math.max(cH.experienceBaler - 0.9 + 1,0.6)
 		else
 			spec.fillScale = spec.fillScaleBackup
 		end
@@ -1840,9 +1836,8 @@ local function HelperAdvancedSprayerGetSprayerUsage(self, superfunc, fillType, d
 		end
 	end
 	if isHired and cH ~= nil then
-		local addScale = ((1.1 - 0.75) * cH.experienceSprayer) + 0.75
-		spec.usageScale.fillTypeScales[fillType] = spec.usageScale.backup[fillType] * addScale
-		spec.usageScale.default = spec.usageScale.backup.default * addScale
+		spec.usageScale.fillTypeScales[fillType] = spec.usageScale.backup[fillType] * math.min(0.9 / cH.experienceSprayer,2.57)
+		spec.usageScale.default = spec.usageScale.backup.default * math.min(0.9 / cH.experienceSprayer,2.57)
 	else
 		spec.usageScale.fillTypeScales[fillType] = spec.usageScale.backup[fillType]
 		spec.usageScale.default = spec.usageScale.backup.default
@@ -1876,16 +1871,17 @@ local function HelperAdvancedSowingMachineEndWorkAreaProcessing(self, dt, hasPro
 		end
 		if isHired and cH ~= nil then
 			local spec = self.spec_sowingMachine
-			local addScale = ((1.1 - 0.75) * cH.experienceSowingMachine) + 0.75
+			
 			local stats = g_farmManager:getFarmById(self:getLastTouchedFarmlandFarmId()).stats
 			if spec.workAreaParameters.lastChangedArea > 0 then
 				local fruitDesc = g_fruitTypeManager:getFruitTypeByIndex(spec.workAreaParameters.seedsFruitType)
 				local lastHa = MathUtil.areaToHa(spec.workAreaParameters.lastChangedArea, g_currentMission:getFruitPixelsToSqm())
-				local usage = fruitDesc.seedUsagePerSqm * lastHa * 10000 * addScale
+				local usage = fruitDesc.seedUsagePerSqm * lastHa * 10000
 				local damage = self:getVehicleDamage()
 				if damage > 0 then
 					usage = usage * (1 + damage * SowingMachine.DAMAGED_USAGE_INCREASE)
 				end
+				usage = usage * (0.9 - cH.experienceSowingMachine)
 				stats:updateStats("seedUsage", usage)
 				if not g_currentMission.missionInfo.helperBuySeeds then
 					local vehicle = spec.workAreaParameters.seedsVehicle
@@ -2114,6 +2110,9 @@ function HelperAdvancedMinuteEvent:run(connection)
 		g_helperManager.indexToHelper[self.helper].experienceMower = self.mow
 		g_helperManager.indexToHelper[self.helper].learnedMower = self.mowS
 		g_helperManager.indexToHelper[self.helper].percentMower = math.min(100 / 1 * g_helperManager.indexToHelper[self.helper].experienceMower,100)
+		g_helperManager.indexToHelper[self.helper].experienceSowingMachine = self.sow
+		g_helperManager.indexToHelper[self.helper].learnedSowingMachine = self.sowS
+		g_helperManager.indexToHelper[self.helper].percentSowingMachine = math.min(100 / 1 * g_helperManager.indexToHelper[self.helper].experienceSowingMachine,100)
 		g_helperManager.indexToHelper[self.helper].experiencePlough = self.plow
 		g_helperManager.indexToHelper[self.helper].learnedPlough = self.plowS
 		g_helperManager.indexToHelper[self.helper].percentPlough = math.min(100 / 1 * g_helperManager.indexToHelper[self.helper].experiencePlough,100)

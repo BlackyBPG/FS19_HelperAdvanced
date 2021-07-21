@@ -2,6 +2,7 @@
 -- Helper Advanced Vehicle Specilaization
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
@@ -24,7 +25,7 @@
 -- 
 
 registerHelperAdvanced = {}
-registerHelperAdvanced.version = "1.9.0.12  -  10.07.2021"
+registerHelperAdvanced.version = "1.9.0.13  -  20.07.2021"
 
 if g_specializationManager:getSpecializationByName("HelperAdvancedVehicle") == nil then
 	g_specializationManager:addSpecialization("HelperAdvancedVehicle", "HelperAdvancedVehicle", Utils.getFilename("scripts/HelperAdvancedVehicle.lua",  g_currentModDirectory),true,nil)
