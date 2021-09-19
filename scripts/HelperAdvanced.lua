@@ -3,7 +3,8 @@
 -- by Blacky_BPG
 -- 
 --
--- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
+-- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
+-- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchronisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
 -- Version 1.9.0.10     |    13.03.2020    fix addMoney error
@@ -67,11 +68,12 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.13 - 20.07.2021"
+HelperAdvanced.version = "1.9.0.14 - 25.08.2021"
 HelperAdvanced.build = 210710
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
 getfenv(0)["g_HelperAdvanced"] = HelperAdvanced
+g_HelperAdvanced = HelperAdvanced
 
 function HelperAdvanced:loadMap(fileName)
 	self.isEnabled = true
@@ -115,6 +117,7 @@ function HelperAdvanced:loadMap(fileName)
 		g_helperManager.indexToHelper[i].learnedExperience = 0
 		g_helperManager.indexToHelper[i].experiencePercentLast = 0
 		g_helperManager.indexToHelper[i].pricePerMS = HelperAdvanced.basePricePerHour/60/60/1000
+		g_helperManager.indexToHelper[i].autoEmployed = false
 		g_helperManager.indexToHelper[i].isHired = false
 		g_helperManager.indexToHelper[i].isEmployed = false
 		g_helperManager.indexToHelper[i].isLearning = 0
@@ -162,6 +165,7 @@ function HelperAdvanced:loadMap(fileName)
 		g_helperManager.indexToHelper[i].lastVehicleName = " "
 		g_helperManager.indexToHelper[i].lastVehicleAiStarted = false
 		g_helperManager.indexToHelper[i].ownerFarmId = 0
+		g_helperManager.indexToHelper[i].index = i
 		if i <= 6 or (i >= 13 and i <= 18) then
 			g_helperManager.indexToHelper[i].iconFilename = createImageOverlay(Utils.getFilename("huds/icon_man.dds", HelperAdvanced.directory))
 		else
@@ -180,6 +184,7 @@ function HelperAdvanced:loadMap(fileName)
 				for i=1, g_helperManager.numHelpers do
 					g_helperManager.indexToHelper[i].nameShow = Utils.getNoNil(getXMLString(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#ownName"),g_helperManager.indexToHelper[i].nameShow)
 					g_helperManager.indexToHelper[i].isEmployed = Utils.getNoNil(getXMLBool(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#isEmployed"),g_helperManager.indexToHelper[i].isEmployed)
+					g_helperManager.indexToHelper[i].autoEmployed = Utils.getNoNil(getXMLBool(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#autoEmployed"),g_helperManager.indexToHelper[i].autoEmployed)
 					g_helperManager.indexToHelper[i].checkValue = Utils.getNoNil(getXMLInt(xmlFile, key..g_helperManager.indexToHelper[i].nameBase.."#checkValue"),g_helperManager.indexToHelper[i].checkValue*(build/23456))/(build/23456)
 					if g_helperManager.indexToHelper[i].checkValue < 0 then
 						g_helperManager.indexToHelper[i].checkValue = (0 - g_helperManager.indexToHelper[i].checkValue) * 2
@@ -232,7 +237,7 @@ function HelperAdvanced:loadMap(fileName)
 						price = HelperAdvanced.overtimePricePerHour - HelperAdvanced.basePricePerHour
 					end
 					g_helperManager.indexToHelper[i].pricePerMS = (HelperAdvanced.basePricePerHour + (price * math.max(g_helperManager.indexToHelper[i].experience-g_helperManager.indexToHelper[i].learnedExperience,0.02)))/60/60/1000
-					self:hireHelper(i,g_helperManager.indexToHelper[i].isEmployed,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,g_helperManager.indexToHelper[i].ownerFarmId)
+					self:hireHelper(i,g_helperManager.indexToHelper[i].isEmployed,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,g_helperManager.indexToHelper[i].ownerFarmId,g_helperManager.indexToHelper[i].autoEmployed)
 				end
 			end
 			delete(xmlFile)
@@ -395,6 +400,7 @@ function HelperAdvanced:saveSavegame(superFunc, ...)
 			setXMLInt(xmlFile, "HelperAdvanced.version#build", g_HelperAdvanced.build)
 			for i=1, g_helperManager.numHelpers do
 				setXMLBool(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#isEmployed", g_helperManager.indexToHelper[i].isEmployed)
+				setXMLBool(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#autoEmployed", g_helperManager.indexToHelper[i].autoEmployed)
 				setXMLString(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#ownName", g_helperManager.indexToHelper[i].nameShow)
 				setXMLInt(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#checkValue", g_helperManager.indexToHelper[i].checkValue*(g_HelperAdvanced.build/23456))
 				setXMLFloat(xmlFile, "HelperAdvanced."..g_helperManager.indexToHelper[i].nameBase.."#costs", g_helperManager.indexToHelper[i].costs*(g_HelperAdvanced.build/23456))
@@ -605,6 +611,19 @@ function HelperAdvanced:minuteChanged()
 					g_currentMission:addMoney(-hp.pricePerMS*1000*60,hp.ownerFarmId, MoneyType.AI)
 				end
 				hp.costs = hp.costs + (hp.pricePerMS*1000*60)
+			else
+				hp.lastVehicle = nil
+				hp.workedWithOther = false
+				hp.workedWithBaler = false
+				hp.workedWithSprayer = false
+				hp.workedWithMower = false
+				hp.workedWithCombine = false
+				hp.workedWithCultivator = false
+				hp.workedWithSowingMachine = false
+				hp.workedWithPlough = false
+				if hp.autoEmployed == true then
+					self:hireHelper(hp.index,false,0,0,0,true)
+				end
 			end
 			if hp.isEmployed == true then
 				hp.checkValue = Utils.getNoNil(hp.checkValue,0) + 1
@@ -617,7 +636,7 @@ function HelperAdvanced:minuteChanged()
 					g_currentMission:addMoney(-price * HelperAdvanced.workPrices["base"],hp.ownerFarmId, MoneyType.AI)
 				end
 				hp.costs = hp.costs + price
-				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(hp.nameShow,hp.pricePerMS,hp.experience,hp.learnedExperience,hp.experienceBaler,hp.learnedBaler,hp.experienceCombine,hp.learnedCombine,hp.experienceCultivator,hp.learnedCultivator,hp.experienceSprayer,hp.learnedSprayer,hp.experienceMower,hp.learnedMower,hp.experienceSowingMachine,hp.learnedSowingMachine,hp.experiencePlough,hp.learnedPlough,hp.experienceOther,hp.learnedOther,hp.isLearning,hp.isLearnSpec, hp.isHired, i, hp.checkValue,hp.isEmployed,hp.lastVehicle,Utils.getNoNil(hp.lastVehicleAiStarted,false),hp.costs,hp.ownerFarmId))
+				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(hp.nameShow,hp.pricePerMS,hp.experience,hp.learnedExperience,hp.experienceBaler,hp.learnedBaler,hp.experienceCombine,hp.learnedCombine,hp.experienceCultivator,hp.learnedCultivator,hp.experienceSprayer,hp.learnedSprayer,hp.experienceMower,hp.learnedMower,hp.experienceSowingMachine,hp.learnedSowingMachine,hp.experiencePlough,hp.learnedPlough,hp.experienceOther,hp.learnedOther,hp.isLearning,hp.isLearnSpec, hp.isHired, i, hp.checkValue,hp.isEmployed,hp.lastVehicle,Utils.getNoNil(hp.lastVehicleAiStarted,false),hp.costs,hp.ownerFarmId,hp.autoEmployed))
 			end
 		end
 	end
@@ -663,6 +682,10 @@ function HelperAdvanced:update(dt)
 						g_helperManager.indexToHelper[i].checkValue = 0
 						g_helperManager.indexToHelper[i].isEmployed = false
 					end
+					if g_helperManager.indexToHelper[i].isEmployed == false then
+						g_helperManager.indexToHelper[i].ownerFarmId = 0
+						g_helperManager.indexToHelper[i].checkValue = 0
+					end
 				end
 			end
 			if self.isClient or g_server == nil then
@@ -677,7 +700,7 @@ function HelperAdvanced:update(dt)
 				if g_farmManager.farmIdToFarm[g_helperManager.indexToHelper[i].ownerFarmId] == nil then
 					g_helperManager.indexToHelper[i].ownerFarmId = 0
 				end
-				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(g_helperManager.indexToHelper[i].nameShow,g_helperManager.indexToHelper[i].pricePerMS,g_helperManager.indexToHelper[i].experience,g_helperManager.indexToHelper[i].learnedExperience,g_helperManager.indexToHelper[i].experienceBaler,g_helperManager.indexToHelper[i].learnedBaler,g_helperManager.indexToHelper[i].experienceCombine,g_helperManager.indexToHelper[i].learnedCombine,g_helperManager.indexToHelper[i].experienceCultivator,g_helperManager.indexToHelper[i].learnedCultivator,g_helperManager.indexToHelper[i].experienceSprayer,g_helperManager.indexToHelper[i].learnedSprayer,g_helperManager.indexToHelper[i].experienceMower,g_helperManager.indexToHelper[i].learnedMower,g_helperManager.indexToHelper[i].experienceSowingMachine,g_helperManager.indexToHelper[i].learnedSowingMachine,g_helperManager.indexToHelper[i].experiencePlough,g_helperManager.indexToHelper[i].learnedPlough,g_helperManager.indexToHelper[i].experienceOther,g_helperManager.indexToHelper[i].learnedOther,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec, g_helperManager.indexToHelper[i].isHired, i, g_helperManager.indexToHelper[i].checkValue, g_helperManager.indexToHelper[i].isEmployed, g_helperManager.indexToHelper[i].lastVehicle, Utils.getNoNil(g_helperManager.indexToHelper[i].lastVehicleAiStarted,false), g_helperManager.indexToHelper[i].costs, g_helperManager.indexToHelper[i].ownerFarmId))
+				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(g_helperManager.indexToHelper[i].nameShow,g_helperManager.indexToHelper[i].pricePerMS,g_helperManager.indexToHelper[i].experience,g_helperManager.indexToHelper[i].learnedExperience,g_helperManager.indexToHelper[i].experienceBaler,g_helperManager.indexToHelper[i].learnedBaler,g_helperManager.indexToHelper[i].experienceCombine,g_helperManager.indexToHelper[i].learnedCombine,g_helperManager.indexToHelper[i].experienceCultivator,g_helperManager.indexToHelper[i].learnedCultivator,g_helperManager.indexToHelper[i].experienceSprayer,g_helperManager.indexToHelper[i].learnedSprayer,g_helperManager.indexToHelper[i].experienceMower,g_helperManager.indexToHelper[i].learnedMower,g_helperManager.indexToHelper[i].experienceSowingMachine,g_helperManager.indexToHelper[i].learnedSowingMachine,g_helperManager.indexToHelper[i].experiencePlough,g_helperManager.indexToHelper[i].learnedPlough,g_helperManager.indexToHelper[i].experienceOther,g_helperManager.indexToHelper[i].learnedOther,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec, g_helperManager.indexToHelper[i].isHired, i, g_helperManager.indexToHelper[i].checkValue, g_helperManager.indexToHelper[i].isEmployed, g_helperManager.indexToHelper[i].lastVehicle, Utils.getNoNil(g_helperManager.indexToHelper[i].lastVehicleAiStarted,false), g_helperManager.indexToHelper[i].costs, g_helperManager.indexToHelper[i].ownerFarmId, g_helperManager.indexToHelper[i].autoEmployed))
 			end
 		end
 	end
@@ -830,7 +853,7 @@ function HelperAdvanced:deactivateHud(isCancel)
 	end
 end
 
-function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,noEventSend)
+function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,autoEmployed,noEventSend)
 	hired = Utils.getNoNil(hired,false)
 	learning = Utils.getNoNil(learning,0)
 	spec = Utils.getNoNil(spec,0)
@@ -841,11 +864,16 @@ function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,noEventSend
 		if HelperAdvanced.employedHelpers ~= nil then
 			for k, h in pairs(HelperAdvanced.employedHelpers) do
 				if h ~= nil and h.index == helper then
+					if h.autoEmployed == false and autoEmployed == true and hired == false then
+						hired = true
+					end
 					if hired == false then
+						h.autoEmployed = false
 						table.remove(HelperAdvanced.employedHelpers, k)
 					else
 						adding = false
 					end
+					break
 				end
 			end
 			for k, h in pairs(g_helperManager.availableHelpers) do
@@ -853,6 +881,7 @@ function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,noEventSend
 					if hired == false then
 						table.remove(g_helperManager.availableHelpers, k)
 					end
+					break
 				end
 			end
 		else
@@ -861,6 +890,14 @@ function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,noEventSend
 		if adding == true and hired == true then
 			table.insert(HelperAdvanced.employedHelpers,g_helperManager.indexToHelper[helper])
 			table.insert(g_helperManager.availableHelpers, g_helperManager.indexToHelper[helper])
+			if autoEmployed ~= nil then
+				g_helperManager.indexToHelper[helper].autoEmployed = autoEmployed
+			end
+		else
+			if hired == false then
+				g_helperManager.indexToHelper[helper].autoEmployed = false
+				autoEmployed = false
+			end
 		end
 		if g_helperManager.indexToHelper[helper].isLearning <= 0 and learning > 0 and spec > 0 then
 			g_helperManager.indexToHelper[helper].isLearning = learning
@@ -875,9 +912,9 @@ function HelperAdvanced:hireHelper(helper,hired,learning,spec,farmId,noEventSend
 		end
 		if noEventSend == nil or noEventSend == false then
 			if g_server ~= nil then
-				g_server:broadcastEvent(HelperAdvancedHireHelper:new(helper, hired, learning, spec, farmId))
+				g_server:broadcastEvent(HelperAdvancedHireHelper:new(helper, hired, learning, spec, farmId, autoEmployed))
 			else
-				g_client:getServerConnection():sendEvent(HelperAdvancedHireHelper:new(helper, hired, learning, spec, farmId))
+				g_client:getServerConnection():sendEvent(HelperAdvancedHireHelper:new(helper, hired, learning, spec, farmId, autoEmployed))
 			end
 		end
 	end
@@ -996,7 +1033,7 @@ function HelperAdvanced:mouseEvent(posX, posY, isDown, isUp, button)
 									if posX > 0.807 and posX < maxX then
 										g_helperManager.indexToHelper[i].isEmployed = true
 										g_helperManager.indexToHelper[i].checkValue = 0
-										self:hireHelper(i,true,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,g_currentMission.player.farmId)
+										self:hireHelper(i,true,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,g_currentMission.player.farmId,false)
 									end
 								else
 									g_helperManager.indexToHelper[i].editMode = true
@@ -1005,7 +1042,7 @@ function HelperAdvanced:mouseEvent(posX, posY, isDown, isUp, button)
 										local maxX = 0.807+(HelperAdvanced.tSize*0.9*5*0.75)
 										if posX > 0.807 and posX < maxX then
 											g_helperManager.indexToHelper[i].isEmployed = false
-											self:hireHelper(i,false,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,0)
+											self:hireHelper(i,false,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec,0,false)
 											g_helperManager.indexToHelper[i].editMode = false
 											self.editCurrentSelection = 0
 										end
@@ -1068,7 +1105,7 @@ function HelperAdvanced:mouseEvent(posX, posY, isDown, isUp, button)
 								eduTime = 4320
 							end
 							if isDown then
-								self:hireHelper(i,g_helperManager.indexToHelper[i].isEmployed,eduTime,self.buttonEduSelected,g_currentMission.player.farmId)
+								self:hireHelper(i,g_helperManager.indexToHelper[i].isEmployed,eduTime,self.buttonEduSelected,g_currentMission.player.farmId,false)
 								self.buttonEduSelected = 0
 							end
 						end
@@ -1598,13 +1635,14 @@ function g_helperManager.getUnemployedHelper(a,b,c)
 		end
 	end
 	if table.getn(unemployed) > 0 then
-		return math.random(1, table.getn(unemployed))
+		return unemployed[math.random(1, table.getn(unemployed))]
 	else
 		return nil
 	end
 end
 
-function g_helperManager.getRandomHelper(self,vehicle, noEventSend, startedFarmId)
+function g_helperManager.getRandomHelper(self,vehicle, noEventSend, startedFarmId,showMenu)
+	showMenu = Utils.getNoNil(showMenu, true)
 	if startedFarmId == nil or startedFarmId == 0 then
 		if g_dedicatedServerInfo == nil then
 			startedFarmId = g_currentMission.player.farmId
@@ -1630,15 +1668,18 @@ function g_helperManager.getRandomHelper(self,vehicle, noEventSend, startedFarmI
 			if newSelectedHelperId == nil or newSelectedHelperId < 1 then
 				g_helperManager.showNoHelperAvailable = true
 			else
-				HelperAdvanced:hireHelper(newSelectedHelperId,true,g_helperManager.indexToHelper[newSelectedHelperId].isLearning,g_helperManager.indexToHelper[newSelectedHelperId].isLearnSpec,startedFarmId,noEventSend)
+				HelperAdvanced:hireHelper(newSelectedHelperId,true,g_helperManager.indexToHelper[newSelectedHelperId].isLearning,g_helperManager.indexToHelper[newSelectedHelperId].isLearnSpec,startedFarmId,true,noEventSend)
 				g_helperManager.showAutoEmployed = true
+				-- g_helperManager.indexToHelper[newSelectedHelperId].autoEmployed = true
 				return g_helperManager.indexToHelper[newSelectedHelperId]
 			end
 		else
 			return g_helperManager.indexToHelper[newSelectedHelperId]
 		end
 	end
-	g_helperManager.showHelperSelectionScreen = true
+	if showMenu == true then
+		g_helperManager.showHelperSelectionScreen = true
+	end
 end
 
 function g_helperManager.useHelper(helper,second)
@@ -1679,7 +1720,9 @@ function g_helperManager.releaseHelper(helper,second,noAdd)
 	helper.workedWithPlough = false
 	helper.workedWithOther = false
 	helper.lastVehicleAiStarted = false
-	if noAdd == nil then
+	if helper.autoEmployed ~= nil and helper.autoEmployed == true then
+		g_HelperAdvanced:hireHelper(helper.index,false,0,0,0,true)
+	elseif noAdd == nil then
 		table.insert(g_helperManager.availableHelpers, helper)
 	end
 end
@@ -1979,7 +2022,7 @@ function HelperAdvancedMinuteEvent:emptyNew()
 	return self
 end
 
-function HelperAdvancedMinuteEvent:new(name,price,exp,edu,bale,baleS,comb,combS,cult,cultS,spray,sprayS,mow,mowS,sow,sowS,plow,plowS,other,otherS,learning,spec, hired, helper, discharge, employ, vehicle, aiStarted, costs, farm)
+function HelperAdvancedMinuteEvent:new(name,price,exp,edu,bale,baleS,comb,combS,cult,cultS,spray,sprayS,mow,mowS,sow,sowS,plow,plowS,other,otherS,learning,spec, hired, helper, discharge, employ, vehicle, aiStarted, costs, farm, autoEmployed)
 	local self = HelperAdvancedMinuteEvent:emptyNew()
 	self.name = name
 	self.price = price
@@ -2011,6 +2054,7 @@ function HelperAdvancedMinuteEvent:new(name,price,exp,edu,bale,baleS,comb,combS,
 	self.helper = helper
 	self.aiStarted = aiStarted
 	self.vehicle = vehicle
+	self.autoEmployed = autoEmployed
 	return self
 end
 
@@ -2043,6 +2087,7 @@ function HelperAdvancedMinuteEvent:readStream(streamId, connection)
 	self.employ = streamReadBool(streamId)
 	self.farm = streamReadUInt8(streamId)
 	self.helper = streamReadUInt8(streamId)
+	self.autoEmployed = streamReadBool(streamId)
 	self.aiStarted = streamReadBool(streamId)
 	if streamReadBool(streamId) == true then
 		self.vehicle = NetworkUtil.readNodeObject(streamId)
@@ -2079,6 +2124,7 @@ function HelperAdvancedMinuteEvent:writeStream(streamId, connection)
 	streamWriteBool(streamId, self.employ)
 	streamWriteUInt8(streamId, self.farm)
 	streamWriteUInt8(streamId, self.helper)
+	streamWriteBool(streamId, self.autoEmployed)
 	streamWriteBool(streamId, self.aiStarted)
 	if self.vehicle ~= nil then
 		streamWriteBool(streamId,true)
@@ -2129,7 +2175,8 @@ function HelperAdvancedMinuteEvent:run(connection)
 		g_helperManager.indexToHelper[self.helper].lastVehicle = self.vehicle
 		g_helperManager.indexToHelper[self.helper].lastVehicleAiStarted = self.aiStarted
 		g_helperManager.indexToHelper[self.helper].ownerFarmId = self.farm
-		HelperAdvanced:hireHelper(self.helper,self.employ,self.learning,self.spec,self.farm,true)
+		g_helperManager.indexToHelper[self.helper].autoEmployed = self.autoEmployed
+		HelperAdvanced:hireHelper(self.helper,self.employ,self.learning,self.spec,self.farm,self.autoEmployed,true)
 	end
 end
 
@@ -2142,19 +2189,21 @@ function HelperAdvancedHireHelper:emptyNew()
 	return self
 end
 
-function HelperAdvancedHireHelper:new(helper, hired, learning, spec, farm)
+function HelperAdvancedHireHelper:new(helper, hired, learning, spec, farm, autoEmployed)
 	local self = HelperAdvancedHireHelper:emptyNew()
 	self.helper = helper
 	self.hired = hired
 	self.learning = learning
 	self.spec = spec
 	self.farm = farm
+	self.autoEmployed = autoEmployed
 	return self
 end
 
 function HelperAdvancedHireHelper:readStream(streamId, connection)
 	self.helper = streamReadUInt8(streamId)
 	self.hired = streamReadBool(streamId)
+	self.autoEmployed = streamReadBool(streamId)
 	self.learning = streamReadInt16(streamId)
 	self.spec = streamReadInt8(streamId)
 	self.farm = streamReadInt8(streamId)
@@ -2164,15 +2213,16 @@ end
 function HelperAdvancedHireHelper:writeStream(streamId, connection)
 	streamWriteUInt8(streamId, self.helper)
 	streamWriteBool(streamId, self.hired)
+	streamWriteBool(streamId, self.autoEmployed)
 	streamWriteInt16(streamId, self.learning)
 	streamWriteInt8(streamId, self.spec)
 	streamWriteInt8(streamId, self.farm)
 end
 
 function HelperAdvancedHireHelper:run(connection)
-	HelperAdvanced:hireHelper(self.helper,self.hired,self.learning,self.spec,self.farm,true)
+	HelperAdvanced:hireHelper(self.helper,self.hired,self.learning,self.spec,self.farm,self.autoEmployed,true)
 	if not connection:getIsServer() then
-		g_server:broadcastEvent(HelperAdvancedHireHelper:new(self.helper,self.hired,self.learning,self.spec,self.farm))
+		g_server:broadcastEvent(HelperAdvancedHireHelper:new(self.helper,self.hired,self.learning,self.spec,self.farm, self.autoEmployed))
 	end
 end
 

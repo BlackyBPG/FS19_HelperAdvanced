@@ -2,6 +2,7 @@
 -- Helper Advanced for Vehicles for FS17
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
 -- Version 1.9.0.11     |    19.06.2021    fix wrong (negativ) employment time, fix MP to SP farmId change error
@@ -57,7 +58,6 @@ function HelperAdvancedVehicle:saveToXMLFile(xmlFile, key)
 	setXMLInt(xmlFile, key.."#lastHelper", Utils.getNoNil(self.spec_aiVehicle.lastHelper,0))
 end
 
-
 function HelperAdvancedVehicle:onUpdate(dt)
 	if self.setName == false then
 		local storeItem = g_storeManager:getItemByXMLFilename(self.configFileName)
@@ -91,6 +91,7 @@ function HelperAdvancedVehicle:onUpdate(dt)
 				else
 					g_helperManager.showAutoDriveHasEmployed = true
 				end
+				self.spec_aiVehicle.currentHelper.autoEmployed = true
 			end
 			g_HelperAdvanced:activateHelperWorks(self.spec_aiVehicle.currentHelper, self)
 		end
@@ -98,18 +99,24 @@ function HelperAdvancedVehicle:onUpdate(dt)
 		g_helperManager:getHelperByIndex(helper.index).lastVehicleName = self.ownVehicleName
 		self.spec_aiVehicle.lastHelper = helper.index
 		if g_dedicatedServerInfo ~= nil then
-			if g_helperManager:getHelperByIndex(helper.index).ownerFarmId ~= self:getOwnerFarmId() and not g_currentMission.accessHandler:canFarmAccessOtherId(g_helperManager:getHelperByIndex(helper.index).ownerFarmId, self:getOwnerFarmId()) then
+			if self.spec_aiVehicle.currentHelper.ownerFarmId ~= self:getOwnerFarmId() and not g_currentMission.accessHandler:canFarmAccessOtherId(self.spec_aiVehicle.currentHelper.ownerFarmId, self:getOwnerFarmId()) then
+				print("Helper >"..tostring(self.spec_aiVehicle.currentHelper.nameShow).."< fired, current farmId >"..tostring(self.spec_aiVehicle.currentHelper.ownerFarmId).."< | vehicle farmId >"..tostring(self:getOwnerFarmId()).."< | rights granted >"..tostring(g_currentMission.accessHandler:canFarmAccessOtherId(self.spec_aiVehicle.currentHelper.ownerFarmId, self:getOwnerFarmId())).."<")
+				self.spec_aiVehicle.currentHelper.isEmployed = false
+				self.spec_aiVehicle.currentHelper.isHired = false
 				g_helperManager:releaseHelper(self.spec_aiVehicle.currentHelper,nil,true)
-				g_helperManager.indexToHelper[helper.index].isEmployed = false
-				g_helperManager.indexToHelper[helper.index].isHired = false
-				g_HelperAdvanced:hireHelper(helper.index,false,g_helperManager.indexToHelper[helper.index].isLearning,g_helperManager.indexToHelper[helper.index].isLearnSpec,g_helperManager:getHelperByIndex(helper.index).ownerFarmId)
-				local newHelper = g_helperManager:getRandomHelper(nil,false,self:getOwnerFarmId())
+				g_HelperAdvanced:hireHelper(helper.index,false,self.spec_aiVehicle.currentHelper.isLearning,self.spec_aiVehicle.currentHelper.isLearnSpec,self.spec_aiVehicle.currentHelper.ownerFarmId,self.spec_aiVehicle.currentHelper.autoEmployed)
+				local newHelper = g_helperManager:getRandomHelper(self,false,self:getOwnerFarmId(),false)
+				if newHelper == nil then
+					newHelper = g_helperManager:getRandomHelper(nil,false,self:getOwnerFarmId())
+				end
 				if newHelper ~= nil and newHelper.ownerFarmId == self:getOwnerFarmId() then
 					self.spec_aiVehicle.currentHelper = newHelper
 					self.currentHelper = newHelper
 					self.spec_aiVehicle.lastHelper = newHelper.index
 					self.lastHelper = newHelper.index
+					newHelper.lastVehicle = self
 					g_helperManager:useHelper(newHelper)
+					helper = self.spec_aiVehicle.currentHelper
 				end
 			end
 		end
@@ -160,8 +167,9 @@ function HelperAdvancedVehicle:onUpdate(dt)
 			if (hp.isHired ~= self:getIsAIActive() and self:getIsAIActive() == false) then
 				g_helperManager.releaseHelper(hp)
 				hp.lastVehicle = nil
-			end
-			if self.isServer then
+				if self.isServer and hp.autoEmployed == true then
+					g_HelperAdvanced:hireHelper(hp.index,false,hp.isLearning,hp.isLearnSpec,0,true)
+				end
 			end
 		end
 	end
