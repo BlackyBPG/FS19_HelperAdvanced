@@ -2,6 +2,7 @@
 -- Helper Advanced for Vehicles for FS17
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.15     |    04.10.2021    fix automaticly fired and hired helpers 2nd
 -- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
@@ -100,7 +101,8 @@ function HelperAdvancedVehicle:onUpdate(dt)
 		self.spec_aiVehicle.lastHelper = helper.index
 		if g_dedicatedServerInfo ~= nil then
 			if self.spec_aiVehicle.currentHelper.ownerFarmId ~= self:getOwnerFarmId() and not g_currentMission.accessHandler:canFarmAccessOtherId(self.spec_aiVehicle.currentHelper.ownerFarmId, self:getOwnerFarmId()) then
-				print("Helper >"..tostring(self.spec_aiVehicle.currentHelper.nameShow).."< fired, current farmId >"..tostring(self.spec_aiVehicle.currentHelper.ownerFarmId).."< | vehicle farmId >"..tostring(self:getOwnerFarmId()).."< | rights granted >"..tostring(g_currentMission.accessHandler:canFarmAccessOtherId(self.spec_aiVehicle.currentHelper.ownerFarmId, self:getOwnerFarmId())).."<")
+				print("------------------------------------------------------------------------------------------")
+				print("Helper >"..tostring(self.spec_aiVehicle.currentHelper.nameShow).." ("..tostring(self.spec_aiVehicle.currentHelper.name)..")< fired, current farmId >"..tostring(self.spec_aiVehicle.currentHelper.ownerFarmId).."< | vehicle farmId >"..tostring(self:getOwnerFarmId()).."< | rights granted >"..tostring(g_currentMission.accessHandler:canFarmAccessOtherId(self.spec_aiVehicle.currentHelper.ownerFarmId, self:getOwnerFarmId())).."<")
 				self.spec_aiVehicle.currentHelper.isEmployed = false
 				self.spec_aiVehicle.currentHelper.isHired = false
 				g_helperManager:releaseHelper(self.spec_aiVehicle.currentHelper,nil,true)
@@ -117,6 +119,11 @@ function HelperAdvancedVehicle:onUpdate(dt)
 					newHelper.lastVehicle = self
 					g_helperManager:useHelper(newHelper)
 					helper = self.spec_aiVehicle.currentHelper
+				end
+				print("Helper >"..tostring(self.spec_aiVehicle.currentHelper.nameShow).." ("..tostring(self.spec_aiVehicle.currentHelper.name)..")< newly assigned")
+				g_HelperAdvanced:minuteChanged()
+				if self.spec_aiVehicle.currentHelper.index ~= nil then
+					g_server:broadcastEvent(HelperAdvancedVehicleEvent:new(self, self.spec_aiVehicle.currentHelper.index), nil, connection, self)
 				end
 			end
 		end
@@ -154,6 +161,14 @@ function HelperAdvancedVehicle:onUpdate(dt)
 
 		if self.spec_aiVehicle.currentHelper ~= nil and self:getIsAIActive() and self.isServer then
 			self:onUpdateFuel(dt,self.spec_aiVehicle.currentHelper)
+		end
+		if self.spec_enterable ~= nil and self.spec_enterable.vehicleCharacter ~= nil then
+			if ((self.spec_enterable.vehicleCharacter.filename == "dataS2/character/humans/player/player01.i3d" and helper.male == false) or (self.spec_enterable.vehicleCharacter.filename == "dataS2/character/humans/player/player02.i3d" and helper.female == false)) or self.spec_enterable.vehicleCharacter.skeletonThirdPerson == nil or self.spec_enterable.vehicleCharacter.graphicsRootNode == nil or self.spec_enterable.vehicleCharacter.thirdPersonSpineNode == nil or self.spec_enterable.vehicleCharacter.meshThirdPerson == nil then
+				self:setRandomVehicleCharacter()
+				if self.ad ~= nil then
+					self.ad.vehicleCharacter = self.spec_enterable.vehicleCharacter
+				end
+			end
 		end
 	else
 		self.courseplayDrive = false
@@ -226,3 +241,48 @@ function HelperAdvancedVehicle:onUpdateFuel(dt, helper)
         end
     end
 end
+
+
+-----------------------------------------------------------------------
+
+HelperAdvancedVehicleEvent = {}
+HelperAdvancedVehicleEvent_mt = Class(HelperAdvancedVehicleEvent, Event)
+
+InitEventClass(HelperAdvancedVehicleEvent, "HelperAdvancedVehicleEvent")
+
+function HelperAdvancedVehicleEvent:emptyNew()
+    local self = Event:new(HelperAdvancedVehicleEvent_mt)
+    self.className="HelperAdvancedVehicleEvent"
+    return self
+end
+
+function HelperAdvancedVehicleEvent:new(vehicle, newHelper)
+	local self = HelperAdvancedVehicleEvent:emptyNew()
+	self.vehicle = vehicle
+	self.newHelper = newHelper
+	return self
+end
+
+function HelperAdvancedVehicleEvent:readStream(streamId, connection)
+	self.vehicle = NetworkUtil.readNodeObject(streamId)
+	self.newHelper = streamReadInt8(streamId)
+	self:run(connection)
+end
+
+function HelperAdvancedVehicleEvent:writeStream(streamId, connection)
+	NetworkUtil.writeNodeObject(streamId, self.vehicle)
+	streamWriteInt8(streamId, self.newHelper)
+end
+
+function HelperAdvancedVehicleEvent:run(connection)
+	if self.vehicle ~= nil and self.newHelper ~= nil then
+		local helper = g_helperManager:getHelperByIndex(self.newHelper)
+		helper.lastVehicleName = self.vehicle.ownVehicleName
+		self.vehicle.spec_aiVehicle.lastHelper = self.newHelper
+		self.vehicle.spec_aiVehicle.currentHelper = helper
+		self.vehicle.currentHelper = helper
+		self.vehicle.lastHelper = self.newHelper
+		g_helperManager:useHelper(newHelper)
+	end
+end
+

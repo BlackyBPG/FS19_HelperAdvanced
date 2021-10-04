@@ -3,6 +3,7 @@
 -- by Blacky_BPG
 -- 
 --
+-- Version 1.9.0.15     |    04.10.2021    fix automaticly fired and hired helpers 2nd
 -- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchronisation in multiplayer
 -- Version 1.9.0.12     |    10.07.2021    fix wrong dismiss helper after ending loan works
@@ -68,7 +69,7 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.14 - 25.08.2021"
+HelperAdvanced.version = "1.9.0.15 - 04.10.2021"
 HelperAdvanced.build = 210710
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
@@ -168,8 +169,12 @@ function HelperAdvanced:loadMap(fileName)
 		g_helperManager.indexToHelper[i].index = i
 		if i <= 6 or (i >= 13 and i <= 18) then
 			g_helperManager.indexToHelper[i].iconFilename = createImageOverlay(Utils.getFilename("huds/icon_man.dds", HelperAdvanced.directory))
+			g_helperManager.indexToHelper[i].male = true
+			g_helperManager.indexToHelper[i].female = false
 		else
 			g_helperManager.indexToHelper[i].iconFilename = createImageOverlay(Utils.getFilename("huds/icon_woman.dds", HelperAdvanced.directory))
+			g_helperManager.indexToHelper[i].female = true
+			g_helperManager.indexToHelper[i].male = false
 		end
 	end
 	HelperAdvanced.employedHelpers = {}
@@ -636,6 +641,21 @@ function HelperAdvanced:minuteChanged()
 					g_currentMission:addMoney(-price * HelperAdvanced.workPrices["base"],hp.ownerFarmId, MoneyType.AI)
 				end
 				hp.costs = hp.costs + price
+				if g_farmManager.farmIdToFarm[hp.ownerFarmId] == nil then
+					hp.ownerFarmId = 0
+				end
+				if hp.isEmployed == false then
+					hp.isHired = false
+					hp.ownerFarmId = 0
+				end
+				if hp.lastVehicle ~= nil and hp.lastVehicle.spec_aiVehicle ~= nil and hp.lastVehicle.spec_aiVehicle.currentHelper ~= nil and hp.lastVehicle.spec_aiVehicle.currentHelper ~= hp then
+					hp.isHired = false
+				end
+				if hp.isHired == false and hp.autoEmployed == true then
+					hp.isEmployed = false
+					hp.ownerFarmId = 0
+					hp.autoEmployed = false
+				end
 				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(hp.nameShow,hp.pricePerMS,hp.experience,hp.learnedExperience,hp.experienceBaler,hp.learnedBaler,hp.experienceCombine,hp.learnedCombine,hp.experienceCultivator,hp.learnedCultivator,hp.experienceSprayer,hp.learnedSprayer,hp.experienceMower,hp.learnedMower,hp.experienceSowingMachine,hp.learnedSowingMachine,hp.experiencePlough,hp.learnedPlough,hp.experienceOther,hp.learnedOther,hp.isLearning,hp.isLearnSpec, hp.isHired, i, hp.checkValue,hp.isEmployed,hp.lastVehicle,Utils.getNoNil(hp.lastVehicleAiStarted,false),hp.costs,hp.ownerFarmId,hp.autoEmployed))
 			end
 		end
@@ -693,12 +713,40 @@ function HelperAdvanced:update(dt)
 			end
 		end
 	end
+	if g_helperManager.numHelpers > 24 then
+		for i=25, g_helperManager.numHelpers do
+			local name = g_helperManager.indexToHelper[i].name
+			if g_helperManager.indexToHelper[i] ~= nil then
+				g_helperManager.helpers[name] = nil
+				g_helperManager.nameToIndex[name] = nil
+			end
+			for k, h in pairs(g_helperManager.availableHelpers) do
+				if h ~= nil and h.name == name then
+					table.remove(g_helperManager.availableHelpers,k)
+				end
+			end
+			print("Wrong additional helper removed ("..tostring(i)..", "..tostring(name)..")")
+			g_helperManager.indexToHelper[i] = nil
+		end
+		g_helperManager.numHelpers = 24
+	end
 	if self.isServer or g_server ~= nil then
 		if HelperAdvanced.request == true then
 			HelperAdvanced.request = false
 			for i=1, g_helperManager.numHelpers do
 				if g_farmManager.farmIdToFarm[g_helperManager.indexToHelper[i].ownerFarmId] == nil then
 					g_helperManager.indexToHelper[i].ownerFarmId = 0
+				end
+				if g_helperManager.indexToHelper[i].isEmployed == false then
+					g_helperManager.indexToHelper[i].ownerFarmId = 0
+				end
+				if g_helperManager.indexToHelper[i].lastVehicle ~= nil and g_helperManager.indexToHelper[i].lastVehicle.spec_aiVehicle ~= nil and g_helperManager.indexToHelper[i].lastVehicle.spec_aiVehicle.currentHelper ~= g_helperManager.indexToHelper[i] then
+					g_helperManager.indexToHelper[i].isHired = false
+				end
+				if g_helperManager.indexToHelper[i].isHired == false and g_helperManager.indexToHelper[i].autoEmployed == true then
+					g_helperManager.indexToHelper[i].isEmployed = false
+					g_helperManager.indexToHelper[i].ownerFarmId = 0
+					g_helperManager.indexToHelper[i].autoEmployed = false
 				end
 				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(g_helperManager.indexToHelper[i].nameShow,g_helperManager.indexToHelper[i].pricePerMS,g_helperManager.indexToHelper[i].experience,g_helperManager.indexToHelper[i].learnedExperience,g_helperManager.indexToHelper[i].experienceBaler,g_helperManager.indexToHelper[i].learnedBaler,g_helperManager.indexToHelper[i].experienceCombine,g_helperManager.indexToHelper[i].learnedCombine,g_helperManager.indexToHelper[i].experienceCultivator,g_helperManager.indexToHelper[i].learnedCultivator,g_helperManager.indexToHelper[i].experienceSprayer,g_helperManager.indexToHelper[i].learnedSprayer,g_helperManager.indexToHelper[i].experienceMower,g_helperManager.indexToHelper[i].learnedMower,g_helperManager.indexToHelper[i].experienceSowingMachine,g_helperManager.indexToHelper[i].learnedSowingMachine,g_helperManager.indexToHelper[i].experiencePlough,g_helperManager.indexToHelper[i].learnedPlough,g_helperManager.indexToHelper[i].experienceOther,g_helperManager.indexToHelper[i].learnedOther,g_helperManager.indexToHelper[i].isLearning,g_helperManager.indexToHelper[i].isLearnSpec, g_helperManager.indexToHelper[i].isHired, i, g_helperManager.indexToHelper[i].checkValue, g_helperManager.indexToHelper[i].isEmployed, g_helperManager.indexToHelper[i].lastVehicle, Utils.getNoNil(g_helperManager.indexToHelper[i].lastVehicleAiStarted,false), g_helperManager.indexToHelper[i].costs, g_helperManager.indexToHelper[i].ownerFarmId, g_helperManager.indexToHelper[i].autoEmployed))
 			end
@@ -1701,15 +1749,29 @@ end
 
 function g_helperManager.releaseHelper(helper,second,noAdd)
 	if helper == nil then
-		if second ~= nil and second.index ~= nil then
-			helper = g_helperManager:getHelperByIndex(second.index)
+		if second ~= nil  then
+			helper = second
 		else
 			print("Warning: No helper for release sent to function [g_helperManager.releaseHelper]")
 			print("If you are just ending/cancel/close the game you can ignore this message above.")
 			return
 		end
 	end
-	if helper == nil then return end
+	if helper == nil then
+		g_HelperAdvanced:minuteChanged()
+		return
+	end
+	local helperFound = false
+	for i=1, g_helperManager.numHelpers do
+		if helper == g_helperManager.indexToHelper[i] then
+			helper = g_helperManager.indexToHelper[i]
+			helperFound = true
+		end
+	end
+	if helperFound == false then
+		g_HelperAdvanced:minuteChanged()
+		return
+	end
 	helper.isHired = false
 	helper.workedWithBaler = false
 	helper.workedWithCombine = false

@@ -163,6 +163,17 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.15 (04.10.2021)
+- - fix automaticly fired and hired helpers 2nd
+- - now the selected helper has right gender model in vehicle
+- - multiplayer synchronisation fixed for currently working helpers
+
+- ##### Version 1.9.0.14 (25.08.2021)
+- - fix automaticly fired and hired helpers
+
+- ##### Version 1.9.0.13 (20.07.2021)
+- - fix missing sowingMachine synchronisation in multiplayer
+
 - ##### Version 1.9.0.12 (10.07.2021)
 - - fix wrong dismiss helper after ending loan works
 
