@@ -166,7 +166,7 @@ function HelperAdvancedVehicle:onUpdate(dt)
 		if self.spec_enterable ~= nil and self.spec_enterable.vehicleCharacter ~= nil then
 			if self.spec_enterable.vehicleCharacter.visualInformation ~= nil then
 				local helperTableOpticals = "helper"..self.spec_aiVehicle.currentHelper.index
-				if self.spec_enterable.vehicleCharacter.visualInformation.selectedModelIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].index and self.spec_enterable.vehicleCharacter.visualInformation.selectedBodyIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].body and self.spec_enterable.vehicleCharacter.visualInformation.selectedColorIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].color and self.spec_enterable.vehicleCharacter.visualInformation.selectedHairIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].hair then
+--				if self.spec_enterable.vehicleCharacter.visualInformation.selectedModelIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].index and self.spec_enterable.vehicleCharacter.visualInformation.selectedBodyIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].body and self.spec_enterable.vehicleCharacter.visualInformation.selectedColorIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].color and self.spec_enterable.vehicleCharacter.visualInformation.selectedHairIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].hair then
 					local hD = {}
 					hD.protection = {}
 					hD.protection.isVisible = false
@@ -192,7 +192,7 @@ function HelperAdvancedVehicle:onUpdate(dt)
 					if self.ad ~= nil then
 						self.ad.vehicleCharacter = self.spec_enterable.vehicleCharacter
 					end
-				end
+--				end
 			end
 		end
 	else
