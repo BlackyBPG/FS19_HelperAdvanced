@@ -94,14 +94,14 @@ HelperAdvanced.helperOpticals = {
 	helper6 ={index=1, body=4, color=6,  hair=4, hat=0,  jacket=0, accessory=1},
 
 	helper7 ={index=2, body=1, color=7,  hair=1, hat=0,  jacket=0, accessory=0},
-	helper8 ={index=2, body=4, color=8,  hair=3, hat=15, jacket=1, accessory=1},
+	helper8 ={index=2, body=4, color=8,  hair=3, hat=15, jacket=0, accessory=1},
 	helper9 ={index=2, body=1, color=9,  hair=2, hat=0,  jacket=0, accessory=0},
 	helper10={index=2, body=4, color=10, hair=1, hat=25, jacket=0, accessory=0},
 	helper11={index=2, body=2, color=11, hair=4, hat=0,  jacket=0, accessory=1},
-	helper12={index=2, body=3, color=12, hair=2, hat=28, jacket=1, accessory=0},
+	helper12={index=2, body=3, color=12, hair=2, hat=28, jacket=0, accessory=0},
 
 	helper13={index=1, body=3, color=13, hair=3, hat=0,  jacket=0, accessory=0},
-	helper14={index=1, body=4, color=14, hair=4, hat=36, jacket=0, accessory=0},
+	helper14={index=1, body=4, color=14, hair=4, hat=36, jacket=1, accessory=0},
 	helper15={index=1, body=2, color=15, hair=2, hat=0,  jacket=0, accessory=1},
 	helper16={index=1, body=4, color=16, hair=1, hat=42, jacket=0, accessory=0},
 	helper17={index=1, body=3, color=17, hair=2, hat=0,  jacket=1, accessory=0},
@@ -111,7 +111,7 @@ HelperAdvanced.helperOpticals = {
 	helper20={index=2, body=1, color=20, hair=4, hat=46, jacket=0, accessory=0},
 	helper21={index=2, body=1, color=1,  hair=3, hat=0,  jacket=0, accessory=0},
 	helper22={index=2, body=3, color=2,  hair=3, hat=58, jacket=0, accessory=0},
-	helper23={index=2, body=4, color=3,  hair=1, hat=0,  jacket=1, accessory=1},
+	helper23={index=2, body=4, color=3,  hair=1, hat=0,  jacket=0, accessory=1},
 	helper24={index=2, body=2, color=4,  hair=4, hat=73, jacket=0, accessory=0}
 }
 

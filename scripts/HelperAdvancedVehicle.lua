@@ -164,7 +164,7 @@ function HelperAdvancedVehicle:onUpdate(dt)
 			self:onUpdateFuel(dt,self.spec_aiVehicle.currentHelper)
 		end
 		if self.spec_enterable ~= nil and self.spec_enterable.vehicleCharacter ~= nil then
-			if self.spec_enterable.vehicleCharacter.visualInformation ~= nil then
+			if self.spec_enterable.vehicleCharacter.visualInformation ~= nil and self.spec_aiVehicle.currentHelper.index < 25 then
 				local helperTableOpticals = "helper"..self.spec_aiVehicle.currentHelper.index
 --				if self.spec_enterable.vehicleCharacter.visualInformation.selectedModelIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].index and self.spec_enterable.vehicleCharacter.visualInformation.selectedBodyIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].body and self.spec_enterable.vehicleCharacter.visualInformation.selectedColorIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].color and self.spec_enterable.vehicleCharacter.visualInformation.selectedHairIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].hair then
 					local hD = {}
