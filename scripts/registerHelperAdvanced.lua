@@ -2,6 +2,7 @@
 -- Helper Advanced Vehicle Specilaization
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.16     |    05.10.2021    fix apparently working helpers who are actually not employed by anyone, Helpers now always have their own clothes on, so the recognition value is there 
 -- Version 1.9.0.15     |    04.10.2021    fix automaticly fired and hired helpers 2nd
 -- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
@@ -27,7 +28,7 @@
 -- 
 
 registerHelperAdvanced = {}
-registerHelperAdvanced.version = "1.9.0.15  -  04.10.2021"
+registerHelperAdvanced.version = "1.9.0.16  -  05.10.2021"
 
 if g_specializationManager:getSpecializationByName("HelperAdvancedVehicle") == nil then
 	g_specializationManager:addSpecialization("HelperAdvancedVehicle", "HelperAdvancedVehicle", Utils.getFilename("scripts/HelperAdvancedVehicle.lua",  g_currentModDirectory),true,nil)

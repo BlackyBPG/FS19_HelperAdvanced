@@ -3,6 +3,7 @@
 -- by Blacky_BPG
 -- 
 --
+-- Version 1.9.0.16     |    05.10.2021    fix apparently working helpers who are actually not employed by anyone, Helpers now always have their own clothes on, so the recognition value is there 
 -- Version 1.9.0.15     |    04.10.2021    fix automaticly fired and hired helpers 2nd
 -- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchronisation in multiplayer
@@ -69,10 +70,51 @@ HelperAdvanced.eduPrices[1] = 14250
 HelperAdvanced.eduPrices[2] = 22400
 HelperAdvanced.eduPrices[3] = 18300
 HelperAdvanced.eduPrices[4] = 9500
-HelperAdvanced.version = "1.9.0.15 - 04.10.2021"
+HelperAdvanced.version = "1.9.0.16 - 05.10.2021"
 HelperAdvanced.build = 210710
 HelperAdvanced.tSize = 0.008543*g_screenAspectRatio 
 HelperAdvanced.keyId = nil
+
+	--[[
+			model	1=Europa	2=Asien		3=Afrika	4=South
+			selectedModelIndex		1=Mann			2=Frau
+			selectedBodyIndex		1 2 3 4			1 2 3 4
+			selectedColorIndex		1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+			selectedHairIndex		1 2 3 4
+			selectedHatIndex		3 6 15 25 28 36 42 43 46 58 65 73 90 
+			selectedJacketIndex		0 1
+			selectedAccessoryIndex	0 1
+	--]]
+HelperAdvanced.helperOpticals = {
+	helper1 ={index=1, body=1, color=1,  hair=1, hat=90, jacket=0, accessory=0},
+	helper2 ={index=1, body=4, color=2,  hair=2, hat=0,  jacket=0, accessory=1},
+	helper3 ={index=1, body=2, color=3,  hair=1, hat=3,  jacket=0, accessory=0},
+	helper4 ={index=1, body=1, color=4,  hair=4, hat=0,  jacket=1, accessory=0},
+	helper5 ={index=1, body=3, color=5,  hair=3, hat=6,  jacket=0, accessory=0},
+	helper6 ={index=1, body=4, color=6,  hair=4, hat=0,  jacket=0, accessory=1},
+
+	helper7 ={index=2, body=1, color=7,  hair=1, hat=0,  jacket=0, accessory=0},
+	helper8 ={index=2, body=4, color=8,  hair=3, hat=15, jacket=1, accessory=1},
+	helper9 ={index=2, body=1, color=9,  hair=2, hat=0,  jacket=0, accessory=0},
+	helper10={index=2, body=4, color=10, hair=1, hat=25, jacket=0, accessory=0},
+	helper11={index=2, body=2, color=11, hair=4, hat=0,  jacket=0, accessory=1},
+	helper12={index=2, body=3, color=12, hair=2, hat=28, jacket=1, accessory=0},
+
+	helper13={index=1, body=3, color=13, hair=3, hat=0,  jacket=0, accessory=0},
+	helper14={index=1, body=4, color=14, hair=4, hat=36, jacket=0, accessory=0},
+	helper15={index=1, body=2, color=15, hair=2, hat=0,  jacket=0, accessory=1},
+	helper16={index=1, body=4, color=16, hair=1, hat=42, jacket=0, accessory=0},
+	helper17={index=1, body=3, color=17, hair=2, hat=0,  jacket=1, accessory=0},
+	helper18={index=1, body=1, color=18, hair=3, hat=43, jacket=0, accessory=0},
+
+	helper19={index=2, body=2, color=19, hair=2, hat=0,  jacket=0, accessory=0},
+	helper20={index=2, body=1, color=20, hair=4, hat=46, jacket=0, accessory=0},
+	helper21={index=2, body=1, color=1,  hair=3, hat=0,  jacket=0, accessory=0},
+	helper22={index=2, body=3, color=2,  hair=3, hat=58, jacket=0, accessory=0},
+	helper23={index=2, body=4, color=3,  hair=1, hat=0,  jacket=1, accessory=1},
+	helper24={index=2, body=2, color=4,  hair=4, hat=73, jacket=0, accessory=0}
+}
+
 getfenv(0)["g_HelperAdvanced"] = HelperAdvanced
 g_HelperAdvanced = HelperAdvanced
 
@@ -91,18 +133,21 @@ function HelperAdvanced:loadMap(fileName)
 	g_helperManager:addHelper("Jean","player_male", "dataS2/character/helper/helper05.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Kenny","player_male", "dataS2/character/helper/helper06.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Gustav","player_male", Utils.getFilename("scripts/helper12.xml", HelperAdvanced.directory),HelperAdvanced.directory)
+
 	g_helperManager:addHelper("Julia","player_female", "dataS2/character/helper/helper07.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Gabriela","player_female", "dataS2/character/helper/helper08.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Daniela","player_female", "dataS2/character/helper/helper09.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Tina","player_female", "dataS2/character/helper/helper10.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Nele","player_female", Utils.getFilename("scripts/helper11.xml", HelperAdvanced.directory),HelperAdvanced.directory)
 	g_helperManager:addHelper("Anna","player_female", "dataS2/character/helper/helper04.xml",g_currentMission.baseDirectory)
+
 	g_helperManager:addHelper("James","player_male", "dataS2/character/helper/helper01.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Frank","player_male", "dataS2/character/helper/helper02.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Gregor","player_male", "dataS2/character/helper/helper03.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Pablo","player_male", "dataS2/character/helper/helper05.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Donald","player_male", "dataS2/character/helper/helper06.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Herbert","player_male", Utils.getFilename("scripts/helper12.xml", HelperAdvanced.directory),HelperAdvanced.directory)
+
 	g_helperManager:addHelper("Olga","player_female", "dataS2/character/helper/helper07.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Erika","player_female", "dataS2/character/helper/helper08.xml",g_currentMission.baseDirectory)
 	g_helperManager:addHelper("Monika","player_female", "dataS2/character/helper/helper09.xml",g_currentMission.baseDirectory)
@@ -655,6 +700,10 @@ function HelperAdvanced:minuteChanged()
 					hp.isEmployed = false
 					hp.ownerFarmId = 0
 					hp.autoEmployed = false
+				end
+				if hp.ownerFarmId == 0 then
+					hp.isEmployed = false
+					hp.isHired = false
 				end
 				g_server:broadcastEvent(HelperAdvancedMinuteEvent:new(hp.nameShow,hp.pricePerMS,hp.experience,hp.learnedExperience,hp.experienceBaler,hp.learnedBaler,hp.experienceCombine,hp.learnedCombine,hp.experienceCultivator,hp.learnedCultivator,hp.experienceSprayer,hp.learnedSprayer,hp.experienceMower,hp.learnedMower,hp.experienceSowingMachine,hp.learnedSowingMachine,hp.experiencePlough,hp.learnedPlough,hp.experienceOther,hp.learnedOther,hp.isLearning,hp.isLearnSpec, hp.isHired, i, hp.checkValue,hp.isEmployed,hp.lastVehicle,Utils.getNoNil(hp.lastVehicleAiStarted,false),hp.costs,hp.ownerFarmId,hp.autoEmployed))
 			end

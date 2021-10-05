@@ -2,6 +2,7 @@
 -- Helper Advanced for Vehicles for FS17
 -- by Blacky_BPG
 -- 
+-- Version 1.9.0.16     |    05.10.2021    fix apparently working helpers who are actually not employed by anyone, Helpers now always have their own clothes on, so the recognition value is there 
 -- Version 1.9.0.15     |    04.10.2021    fix automaticly fired and hired helpers 2nd
 -- Version 1.9.0.14     |    25.08.2021    fix automaticly fired and hired helpers
 -- Version 1.9.0.13     |    20.07.2021    fix missing sowingMachine synchroisation in multiplayer
@@ -163,10 +164,34 @@ function HelperAdvancedVehicle:onUpdate(dt)
 			self:onUpdateFuel(dt,self.spec_aiVehicle.currentHelper)
 		end
 		if self.spec_enterable ~= nil and self.spec_enterable.vehicleCharacter ~= nil then
-			if ((self.spec_enterable.vehicleCharacter.filename == "dataS2/character/humans/player/player01.i3d" and helper.male == false) or (self.spec_enterable.vehicleCharacter.filename == "dataS2/character/humans/player/player02.i3d" and helper.female == false)) or self.spec_enterable.vehicleCharacter.skeletonThirdPerson == nil or self.spec_enterable.vehicleCharacter.graphicsRootNode == nil or self.spec_enterable.vehicleCharacter.thirdPersonSpineNode == nil or self.spec_enterable.vehicleCharacter.meshThirdPerson == nil then
-				self:setRandomVehicleCharacter()
-				if self.ad ~= nil then
-					self.ad.vehicleCharacter = self.spec_enterable.vehicleCharacter
+			if self.spec_enterable.vehicleCharacter.visualInformation ~= nil then
+				local helperTableOpticals = "helper"..self.spec_aiVehicle.currentHelper.index
+				if self.spec_enterable.vehicleCharacter.visualInformation.selectedModelIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].index and self.spec_enterable.vehicleCharacter.visualInformation.selectedBodyIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].body and self.spec_enterable.vehicleCharacter.visualInformation.selectedColorIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].color and self.spec_enterable.vehicleCharacter.visualInformation.selectedHairIndex ~= g_HelperAdvanced.helperOpticals[helperTableOpticals].hair then
+					local hD = {}
+					hD.protection = {}
+					hD.protection.isVisible = false
+					hD.jackets = {}
+					hD.accessories = {}
+					hD.bodies = {}
+					hD.hairs = {}
+					hD.hairs.styles = {}
+					hD.selectedJacketIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].jacket
+					hD.selectedHatIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].hat
+					hD.selectedBodyIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].body
+					hD.selectedColorIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].color
+					hD.selectedHairIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].hair
+					hD.selectedModelIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].index
+					hD.selectedAccessoryIndex = g_HelperAdvanced.helperOpticals[helperTableOpticals].accessory
+					hD.accessoryReferenceFilename = "$dataS/playerClothing.xml"
+					hD.hatReferenceFilename = "$dataS/playerClothing.xml"
+					if self.spec_aiVehicle.currentHelper.male == true then
+						self:setVehicleCharacter("dataS/character/humans/player/player01.xml", hD)
+					else
+						self:setVehicleCharacter("dataS/character/humans/player/player02.xml", hD)
+					end
+					if self.ad ~= nil then
+						self.ad.vehicleCharacter = self.spec_enterable.vehicleCharacter
+					end
 				end
 			end
 		end

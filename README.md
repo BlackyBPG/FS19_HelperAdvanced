@@ -163,6 +163,10 @@ Ein Helfer kann für 1, 2 oder 3 Tage auf Lehrgang geschickt werden, jeder Helfe
 
 ### CHANGELOG:
 
+- ##### Version 1.9.0.16 (05.10.2021)
+- - fix apparently working helpers who are actually not employed by anyone
+- - Helpers now always have their own clothes on, so the recognition value is there
+
 - ##### Version 1.9.0.15 (04.10.2021)
 - - fix automaticly fired and hired helpers 2nd
 - - now the selected helper has right gender model in vehicle
